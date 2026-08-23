@@ -1,6 +1,6 @@
 import { hitsAtStep, VOICE_META, DYNAMICS, type PatternIndex, type Voice } from '@/entities/pattern'
-import { AudioEngine } from '@/shared/lib/audio'
-import { Transport, type StepEvent } from '@/shared/lib/transport'
+import { getAudioEngine, getTransport } from '@/shared/lib/runtime'
+import type { StepEvent } from '@/shared/lib/transport'
 
 /**
  * What the scheduler needs to know at the moment a step is placed. The store
@@ -14,28 +14,18 @@ export interface PlaybackSnapshot {
   metronome: boolean
 }
 
-let engine: AudioEngine | undefined
-let transport: Transport | undefined
 let snapshot: (() => PlaybackSnapshot) | undefined
+let disconnect: (() => void) | undefined
 
 export function setPlaybackSnapshot(getter: () => PlaybackSnapshot): void {
   snapshot = getter
-}
-
-export function audioAvailable(): boolean {
-  return typeof AudioContext !== 'undefined'
-}
-
-export function getEngine(): AudioEngine {
-  engine ??= new AudioEngine()
-  return engine
 }
 
 /** Play every scheduled hit at its exact clock time (§7.2, Watch mode). */
 function onSchedule(event: StepEvent): void {
   const state = snapshot?.()
   if (!state) return
-  const audio = getEngine()
+  const audio = getAudioEngine()
 
   if (event.isCountIn) {
     if (event.isBeat) audio.playMetronome(event.time, event.step === 0)
@@ -56,31 +46,22 @@ function onSchedule(event: StepEvent): void {
   }
 }
 
-export function getTransport(): Transport {
-  if (!transport) {
-    transport = new Transport({
-      clock: getEngine().clock,
-      bpm: 80,
-      subdivision: 8,
-      timeSig: [4, 4],
-      bars: 1,
-    })
-    transport.on('schedule', onSchedule)
-  }
-  return transport
+/**
+ * Take over the transport's step events for Watch mode.
+ *
+ * Modes attach and detach rather than coexisting: Practice plays only the
+ * lanes assigned to "auto" (§9.2), so if both were subscribed at once every
+ * auto lane would sound twice.
+ */
+export function connectWatchPlayback(): () => void {
+  disconnectWatchPlayback()
+  disconnect = getTransport().on('schedule', onSchedule)
+  return disconnectWatchPlayback
 }
 
-/** Render the kit and lift the browser's autoplay suspension. */
-export async function primeAudio(): Promise<void> {
-  const audio = getEngine()
-  await audio.resume()
-  await audio.ready()
+export function disconnectWatchPlayback(): void {
+  disconnect?.()
+  disconnect = undefined
 }
 
-/** Test seam: drop the singletons so a fresh engine can be built. */
-export function resetPlaybackEngine(): void {
-  transport?.dispose()
-  transport = undefined
-  engine = undefined
-  snapshot = undefined
-}
+export { audioAvailable, getAudioEngine as getEngine, getTransport, primeAudio } from '@/shared/lib/runtime'

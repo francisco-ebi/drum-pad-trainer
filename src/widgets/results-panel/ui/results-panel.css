@@ -1,0 +1,92 @@
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-5);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+
+.results__head { display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap; }
+
+.results__grade {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--c-accent);
+  width: 88px;
+  text-align: center;
+}
+.results__grade--S { color: var(--c-good); }
+.results__grade--D { color: var(--c-danger); }
+
+.results__figures { display: flex; gap: var(--sp-5); flex-wrap: wrap; }
+.results__figure { display: flex; flex-direction: column; gap: 2px; }
+.results__label {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--c-text-faint);
+}
+.results__value { font-family: var(--font-mono); font-size: 24px; font-weight: 700; line-height: 1; }
+
+.results__section-title {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+  margin: 0 0 var(--sp-2);
+}
+
+/* Timing histogram (§10.4) */
+.results__histogram {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: end;
+  gap: 2px;
+  height: 96px;
+  padding-bottom: 18px;
+  position: relative;
+  border-bottom: 1px solid var(--c-border);
+}
+.results__bar {
+  position: relative;
+  background: var(--c-accent);
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+}
+.results__bar--center { background: var(--c-good); }
+.results__bar--empty { background: var(--c-surface-3); }
+.results__axis {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--c-text-faint);
+  margin-top: var(--sp-1);
+}
+.results__verdict { font-size: 14px; color: var(--c-text); margin: var(--sp-3) 0 0; }
+.results__verdict-sub { font-size: 12px; color: var(--c-text-dim); margin: var(--sp-1) 0 0; }
+
+.results__weakspot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-md);
+  background: var(--c-surface-2);
+}
+.results__weakspot-text { flex: 1; min-width: 220px; font-size: 14px; }
+.results__voice-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 700;
+}
+.results__voice-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--voice); }
+
+.results__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }

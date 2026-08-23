@@ -1,5 +1,6 @@
 export { useWatchPlayback, isVoiceAudible } from './model/store'
 export type { WatchPlaybackState } from './model/store'
-export { audioAvailable, primeAudio, resetPlaybackEngine } from './model/engine'
+export { connectWatchPlayback, disconnectWatchPlayback } from './model/engine'
+export { audioAvailable, primeAudio } from '@/shared/lib/runtime'
 export { useCountInBeats, usePlayheadPosition, usePlayheadStep } from './lib/use-playhead'
 export { useWatchHotkeys } from './lib/use-watch-hotkeys'

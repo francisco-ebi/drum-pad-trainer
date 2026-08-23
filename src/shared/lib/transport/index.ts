@@ -1,7 +1,7 @@
 export { Transport } from './transport'
 export type { StepEvent, TransportConfig, TransportOptions, TransportState } from './transport'
-export { audioClock } from './clock'
-export type { Clock } from './clock'
+export { anchorFromOutputTimestamp, audioClock, captureAnchor, performanceClock } from './clock'
+export type { Clock, TimeAnchor } from './clock'
 export {
   fromBarStep,
   isBeatStep,

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { audioAvailable, getTransport } from '../model/engine'
+import { audioAvailable, getTransport } from '@/shared/lib/runtime'
 import { useWatchPlayback } from '../model/store'
 
 /**

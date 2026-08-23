@@ -1,0 +1,19 @@
+.vmidi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px dashed var(--c-border-strong);
+  border-radius: var(--r-md);
+  background: var(--c-surface-2);
+}
+.vmidi__title {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--c-text-faint);
+  width: 100%;
+  margin: 0;
+}
+.vmidi__note { font-size: 12px; color: var(--c-text-dim); flex-basis: 100%; margin: 0; }

@@ -153,3 +153,109 @@ describe('Transport', () => {
     transport.dispose()
   })
 })
+
+describe('performance-to-audio anchor (§8.2)', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  /** A transport whose two timelines start deliberately far apart, so a bug
+   *  that conflates them cannot pass by coincidence. */
+  function anchored(perfOffsetSec = 1000) {
+    const clock = new TestClock()
+    const perf = new TestClock(perfOffsetSec)
+    const transport = new Transport({
+      clock,
+      tickSource: intervalTickSource(),
+      perfClock: perf,
+      bpm: 120,
+      subdivision: 8,
+      timeSig: [4, 4],
+      bars: 1,
+      startLeadSec: 0,
+    })
+    const advance = (seconds: number) => {
+      perf.advance(seconds)
+      runFor(clock, seconds)
+    }
+    return { clock, perf, transport, advance }
+  }
+
+  it('has no anchor while stopped and captures one on play', () => {
+    const { transport, perf, clock } = anchored()
+    expect(transport.timeAnchor).toBeUndefined()
+
+    const seen: unknown[] = []
+    transport.on('anchor', (anchor) => seen.push(anchor))
+    transport.play()
+
+    expect(transport.timeAnchor).toEqual({ perfSec: perf.now(), audioSec: clock.now() })
+    expect(seen).toHaveLength(1)
+    transport.stop()
+    expect(transport.timeAnchor).toBeUndefined()
+    transport.dispose()
+  })
+
+  it('maps a MIDI timestamp onto the audio clock across the offset', () => {
+    const { transport, advance } = anchored(1000)
+    transport.play()
+    advance(1)
+
+    // An event stamped 1500 ms into the performance timeline is 0.5 s of audio.
+    expect(transport.perfToAudioTime(1000_500)).toBeCloseTo(0.5, 9)
+    expect(transport.audioToPerfTime(0.5)).toBeCloseTo(1000_500, 6)
+    transport.dispose()
+  })
+
+  it('round-trips a timestamp through both mappings', () => {
+    const { transport, advance } = anchored(1234.5)
+    transport.play()
+    advance(0.75)
+    for (const perfMs of [1234_500, 1235_000, 1240_250]) {
+      expect(transport.audioToPerfTime(transport.perfToAudioTime(perfMs))).toBeCloseTo(perfMs, 6)
+    }
+    transport.dispose()
+  })
+
+  it('places a hit on the step it landed on', () => {
+    const { transport, advance } = anchored(1000)
+    transport.play()
+    advance(1)
+
+    // 120 BPM 8ths: one step is 0.25 s. Step 2 falls 0.5 s after the start.
+    expect(transport.positionAtPerfTime(1000_500)).toBeCloseTo(2, 9)
+    expect(transport.positionAtPerfTime(1000_625)).toBeCloseTo(2.5, 9)
+    // and it wraps with the loop, exactly as the playhead does
+    expect(transport.positionAtPerfTime(1002_500)).toBeCloseTo(2, 9)
+    transport.dispose()
+  })
+
+  it('reports the offset of a hit played 20 ms late', () => {
+    const { transport, advance } = anchored(1000)
+    transport.play()
+    advance(1)
+
+    const stepSec = 0.25
+    const lateBy = 0.02
+    const audioSec = transport.perfToAudioTime((1000 + stepSec * 2 + lateBy) * 1000)
+    const offsetFromStep2 = audioSec - stepSec * 2
+    expect(offsetFromStep2).toBeCloseTo(lateBy, 9)
+    transport.dispose()
+  })
+
+  it('keeps count-in steps negative so a take starts at raw 0', () => {
+    const { transport, advance } = anchored(1000)
+    transport.setCountInBars(1)
+    transport.play()
+    advance(0.1)
+
+    // One count-in bar is 8 steps = 2 s before the pattern starts.
+    expect(transport.rawPositionAtTime(0)).toBeCloseTo(-8, 9)
+    expect(transport.rawPositionAtTime(2)).toBeCloseTo(0, 9)
+    expect(transport.rawPositionAtTime(2.25)).toBeCloseTo(1, 9)
+    transport.dispose()
+  })
+})

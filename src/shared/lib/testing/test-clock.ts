@@ -20,7 +20,7 @@ export class TestClock implements Clock {
  * lookahead scheduler wakes up exactly as it would in a browser.
  * Requires `vi.useFakeTimers()`.
  */
-export function runFor(clock: TestClock, seconds: number, sliceMs = SCHEDULER.intervalMs): void {
+export function runFor(clock: TestClock, seconds: number, sliceMs: number = SCHEDULER.intervalMs): void {
   const slices = Math.ceil((seconds * 1000) / sliceMs)
   for (let i = 0; i < slices; i++) {
     clock.advance(sliceMs / 1000)

@@ -1,4 +1,11 @@
-import { audioClock, type Clock } from '@/shared/lib/transport'
+import {
+  anchorFromOutputTimestamp,
+  audioClock,
+  captureAnchor,
+  performanceClock,
+  type Clock,
+  type TimeAnchor,
+} from '@/shared/lib/transport'
 import { Sampler } from './sampler'
 import { DEFAULT_SYNTH_BANK, renderBank, type SynthBank } from './synth-kit'
 
@@ -49,6 +56,22 @@ export class AudioEngine {
       this.metronomeSampler.load(buffers)
     })
     return this.loading
+  }
+
+  /**
+   * Pair the performance and audio timelines for input judging (§8.2).
+   *
+   * `getOutputTimestamp()` correlates the two at the *output* — the audio time
+   * of the sample currently leaving the device, and the performance time it
+   * left at — which is a truer pairing than reading both clocks at the call
+   * site. Not every browser implements it (or fills it in before playback has
+   * begun), so a back-to-back reading is the fallback; latency calibration
+   * (§8.3) absorbs the difference either way.
+   */
+  captureAnchor(): TimeAnchor {
+    return anchorFromOutputTimestamp(this.ctx.getOutputTimestamp?.(), () =>
+      captureAnchor(this.clock, performanceClock()),
+    )
   }
 
   /** Browsers start the context suspended until a user gesture. */

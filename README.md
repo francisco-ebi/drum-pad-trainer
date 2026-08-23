@@ -3,7 +3,8 @@
 A browser-based drum trainer driven by a 4×4 MIDI pad controller.
 See [SPEC.md](SPEC.md) for the full product and technical specification.
 
-**Current milestone: M1 — "It plays"** (visualisation + audio, Watch mode).
+**Current milestone: M2 — "It listens"** (MIDI input, judging, Practice mode).
+M1 ("It plays") is complete.
 
 ## Getting started
 
@@ -22,6 +23,33 @@ yarn dev
 | `yarn lint` | Steiger — fails on Feature-Sliced Design violations (§13.2) |
 
 Chromium-based desktop browsers are the primary target (§3).
+
+## What M2 ships
+
+- **MIDI input** (§8.1) — `shared/lib/midi`: Web MIDI wrapper with device list,
+  hot-plug, note-on extraction and the 30 ms same-note debounce, plus the
+  keyboard fallback (`1234 / QWER / ASDF / ZXCV`) that keeps every mode usable
+  without hardware.
+- **Timestamp anchor** (§8.2) — the transport pairs the `performance.now()` and
+  `AudioContext` timelines at each start, preferring `getOutputTimestamp()` so a
+  hit is judged against the audio the player actually heard.
+- **Mapping** (§4.3) — `entities/device`: General MIDI and chromatic-36 presets,
+  plus the pad-by-pad learn wizard, stored per device name.
+- **Calibration** (§8.3) — click-along run, median of the settled hits, and an
+  IQR sanity check that refuses to store an inconsistent run.
+- **Judging and scoring** (§10) — `entities/take`: one streaming judge drives
+  both the live HUD and the results screen, so the two can never disagree.
+  Perfect/Good/Miss/Wrong-pad/Extra, tempo-clamped windows, combo multipliers,
+  accuracy and letter grades.
+- **Practice mode** (§9.2) — lane assignment presets, wait mode, tempo ladder,
+  no-fail and strict stop, live HUD, and a graceful end if the controller
+  vanishes mid-take.
+- **Live pad view** (§6.3) — approach rings driven from the audio clock, hit and
+  wrong-pad feedback, keyboard letters on each pad.
+- **Results** (§10.4) — grade, timing histogram, rushing/dragging verdict, and
+  the weak-spot callout with "drill that step".
+- **Virtual MIDI dev tool** (§13.3) — scripts a take in a chosen style and plays
+  it into the live input, stamped with exact times.
 
 ## What M1 ships
 
@@ -71,9 +99,20 @@ render snapshot-testable against the reference material.
 ## Testing
 
 `yarn test` covers transport scheduling (exact step times, loop wrap, tempo
-changes at the bar line, count-in, A/B range, step-through), the pattern schema,
-seed fidelity against the §5.1 tables, pad resolution, and a golden-file render
-of the filmstrip (ASCII 4×4 per step, in `__snapshots__`).
+changes at the bar line, count-in, A/B range, step-through), the performance ↔
+audio anchor, the pattern schema, seed fidelity against the §5.1 tables, pad
+resolution and note mapping, calibration statistics, the judge and scorer, and a
+golden-file render of the filmstrip (ASCII 4×4 per step, in `__snapshots__`).
+
+Two suites are worth knowing about:
+
+- `features/practice-take/lib/scripted-take.test.ts` is the **M2 acceptance
+  criterion** (§16): a take scripted at +20 ms with calibration applied scores
+  100 %, and wrong-pad, extra and miss are each classified per §10.
+- `features/practice-take/model/session.test.ts` drives a **whole live take**
+  against hand-cranked clocks — the transport, the performance timeline the
+  input is stamped on, and the frame pump are all controlled, so the timing
+  assertions are exact rather than approximate.
 
 Audio rendering assertions are `skipIf`-guarded on `OfflineAudioContext` and so
 are skipped under jsdom; they start running once the browser test environment
@@ -94,8 +133,12 @@ AudioWorklet clock later is a change to one file behind that interface.
 
 ## Known gaps / follow-ups
 
-- **MIDI timestamps.** §8.2 needs a `performance.now()` ↔ `AudioContext.currentTime`
-  anchor captured at transport start, so judged hits land in transport time. The
-  transport has no such anchor yet; it is additive, and belongs with M2's judging.
-- No MIDI, judging, scoring, or Practice/Drill modes yet — those are M2 and M3.
-- A single screen, no router; Dashboard / Library / Results arrive with M3 (§12).
+- **Results are a panel, not a screen.** §12 lists Results as its own route;
+  with no router yet it renders in place on the Session screen. It moves when
+  M3 adds routing.
+- **Drills, curriculum and the meta-game** are M3: stars, gating, XP, streaks,
+  badges, Dashboard, Library, onboarding. `PracticeSession` already accepts the
+  `maxLoops` an assessed take needs.
+- **No browser e2e run yet.** Playwright and the browser-mode Vitest environment
+  land with the rest of M3's testing work; the Web Audio rendering assertions in
+  `synth-kit.test.ts` are `skipIf`-guarded until then.

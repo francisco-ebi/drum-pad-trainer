@@ -9,7 +9,8 @@ import {
   type Voice,
 } from '@/entities/pattern'
 import type { TransportState } from '@/shared/lib/transport'
-import { audioAvailable, getTransport, primeAudio, setPlaybackSnapshot } from './engine'
+import { audioAvailable, getTransport, primeAudio } from '@/shared/lib/runtime'
+import { setPlaybackSnapshot } from './engine'
 
 export interface WatchPlaybackState {
   pattern: Pattern

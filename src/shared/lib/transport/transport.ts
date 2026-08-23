@@ -1,7 +1,7 @@
 import { Emitter } from '@/shared/lib/emitter'
 import { createLookaheadScheduler, type LookaheadScheduler } from '@/shared/lib/audio/scheduler'
 import type { TickSource } from '@/shared/lib/audio/tick-source'
-import type { Clock } from './clock'
+import { captureAnchor, performanceClock, type Clock, type TimeAnchor } from './clock'
 import {
   isBeatStep,
   mod,
@@ -37,6 +37,8 @@ export interface StepEvent {
 }
 
 interface TransportEvents extends Record<string, unknown> {
+  /** A fresh performance-to-audio anchor was captured (§8.2). */
+  anchor: TimeAnchor
   /** A step falling inside the lookahead window — schedule audio at `time`. */
   schedule: StepEvent
   /** Transport state, tempo, loop or position changed (UI sync). */
@@ -53,6 +55,10 @@ export interface TransportOptions extends TransportConfig {
   countInBars?: number
   /** Override the scheduler heartbeat (tests inject a fake-timer source). */
   tickSource?: TickSource
+  /** The timeline input events are stamped on; defaults to `performance.now()`. */
+  perfClock?: Clock
+  /** Overrides how the two timelines are paired (see `AudioEngine.captureAnchor`). */
+  anchorSource?: () => TimeAnchor
 }
 
 /**
@@ -64,6 +70,7 @@ export interface TransportOptions extends TransportConfig {
  */
 export class Transport {
   private readonly clock: Clock
+  private readonly anchorSource: () => TimeAnchor
   private readonly emitter = new Emitter<TransportEvents>()
   private readonly scheduler: LookaheadScheduler
   private readonly startLeadSec: number
@@ -84,10 +91,20 @@ export class Transport {
   private restRaw = 0
   private pendingBpm: number | undefined
   private stopAtTime: number | undefined
+  private anchor: TimeAnchor | undefined
 
   constructor(options: TransportOptions) {
-    const { clock, startLeadSec = 0.06, countInBars = 0, tickSource, ...config } = options
+    const {
+      clock,
+      startLeadSec = 0.06,
+      countInBars = 0,
+      tickSource,
+      perfClock = performanceClock(),
+      anchorSource,
+      ...config
+    } = options
     this.clock = clock
+    this.anchorSource = anchorSource ?? (() => captureAnchor(clock, perfClock))
     this.config = config
     this.startLeadSec = startLeadSec
     this.countInBars = countInBars
@@ -161,6 +178,56 @@ export class Transport {
     return raw < 0 ? Math.ceil(-raw) : 0
   }
 
+  /**
+   * The performance-to-audio anchor captured at `play()` (§8.2), or undefined
+   * while stopped. Judging maps every input timestamp through this, so a hit
+   * is compared against the audio that was actually scheduled — not against
+   * when the event happened to be handled.
+   */
+  get timeAnchor(): TimeAnchor | undefined {
+    return this.anchor
+  }
+
+  /**
+   * Map a DOMHighResTimeStamp — a `MIDIMessageEvent.timeStamp` or a keyboard
+   * event's — onto the audio clock (§8.2).
+   *
+   * While stopped there is no take to judge against, so this falls back to a
+   * fresh pairing; that keeps free-play monitoring honest without pretending a
+   * take-relative time exists.
+   */
+  perfToAudioTime(perfMs: number): number {
+    const anchor = this.anchor ?? this.anchorSource()
+    return anchor.audioSec + (perfMs / 1000 - anchor.perfSec)
+  }
+
+  /** Inverse of {@link perfToAudioTime}, for scheduling UI against audio time. */
+  audioToPerfTime(audioSec: number): number {
+    const anchor = this.anchor ?? this.anchorSource()
+    return (anchor.perfSec + (audioSec - anchor.audioSec)) * 1000
+  }
+
+  /**
+   * Steps since `play()` at an audio-clock time — negative during count-in,
+   * unwrapped, so successive loop passes stay distinguishable.
+   *
+   * Tempo changes re-anchor the step timeline, so this is only meaningful for
+   * times at or after the most recent tempo change.
+   */
+  rawPositionAtTime(audioSec: number): number {
+    return this.anchorRaw + (audioSec - this.anchorTime) / this.secondsPerStep
+  }
+
+  /** Pattern-step position at an audio-clock time, wrapped into the loop range. */
+  positionAtTime(audioSec: number): number {
+    return this.rangeStart + this.wrap(Math.max(0, this.rawPositionAtTime(audioSec)))
+  }
+
+  /** Where an input event landed, in pattern steps (§8.2 end to end). */
+  positionAtPerfTime(perfMs: number): number {
+    return this.positionAtTime(this.perfToAudioTime(perfMs))
+  }
+
   on = this.emitter.on.bind(this.emitter)
 
   // ---- configuration -----------------------------------------------------
@@ -221,9 +288,13 @@ export class Transport {
     this.anchorTime = this.clock.now() + this.startLeadSec
     this.nextScheduleRaw = Math.ceil(startRaw - 1e-9)
     this.stopAtTime = undefined
+    // Re-anchor on every start: the two clocks drift apart over a long session,
+    // and a take is short enough that one anchor per take is exact enough.
+    this.anchor = this.anchorSource()
     this.state = 'playing'
     this.scheduler.start()
     this.emitter.emit('state', this.state)
+    if (this.anchor) this.emitter.emit('anchor', this.anchor)
   }
 
   pause(): void {
@@ -239,6 +310,7 @@ export class Transport {
     this.restRaw = 0
     this.stopAtTime = undefined
     this.pendingBpm = undefined
+    this.anchor = undefined
     this.state = 'stopped'
     this.emitter.emit('state', this.state)
   }
