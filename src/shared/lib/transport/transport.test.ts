@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { intervalTickSource } from '@/shared/lib/audio'
 import { runFor, TestClock } from '@/shared/lib/testing'
 import { Transport, type StepEvent } from './transport'
 
@@ -12,6 +13,8 @@ function makeTransport(overrides: Partial<{ bpm: number; subdivision: number; ba
   const clock = new TestClock()
   const transport = new Transport({
     clock,
+    // Pin the heartbeat to the main thread so fake timers drive it.
+    tickSource: intervalTickSource(),
     bpm: 120,
     subdivision: 8,
     timeSig: [4, 4],

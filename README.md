@@ -29,8 +29,8 @@ Chromium-based desktop browsers are the primary target (§3).
   validator; the three seed patterns are parsed through it at import, so bad data
   fails loudly instead of half-rendering.
 - **Audio engine** (§7) — `shared/lib/audio`: a lookahead scheduler (25 ms tick,
-  100 ms window), a buffer sampler with per-sound gain, a velocity curve and
-  hi-hat choke groups, and a metronome bus.
+  100 ms window) whose heartbeat runs on a worker thread, a buffer sampler with
+  per-sound gain, a velocity curve and hi-hat choke groups, and a metronome bus.
 - **Transport** (§7.3) — `shared/lib/transport`: the AudioContext master clock,
   `(bar, step) ↔ seconds` math, loop and A/B range, count-in, tempo changes that
   land on the next bar boundary, and step-through.
@@ -79,11 +79,23 @@ Audio rendering assertions are `skipIf`-guarded on `OfflineAudioContext` and so
 are skipped under jsdom; they start running once the browser test environment
 lands with M2's Playwright suite (§13.3).
 
+### Why the scheduler ticks on a worker
+
+Browsers clamp `setInterval` in hidden tabs, which would starve the scheduler's
+100 ms lookahead window and drop audio the moment the user tabs away. Dedicated
+workers are not clamped that way, so the heartbeat lives in
+`shared/lib/audio/timer.worker.ts` and only the scheduling work runs on the main
+thread — the standard fix for web audio clocks.
+
+The timer is injectable (`TickSource`): the worker is the default, a main-thread
+`setInterval` is the fallback where workers are unavailable, and tests inject the
+interval source so fake timers can drive it deterministically. Swapping in an
+AudioWorklet clock later is a change to one file behind that interface.
+
 ## Known gaps / follow-ups
 
-- **Background tabs.** The lookahead scheduler uses `setInterval`, which browsers
-  throttle to ~1 s in hidden tabs — long enough to starve the 100 ms window and
-  drop audio. Moving the timer into a Worker or an AudioWorklet is the fix; worth
-  doing alongside M2's input work.
+- **MIDI timestamps.** §8.2 needs a `performance.now()` ↔ `AudioContext.currentTime`
+  anchor captured at transport start, so judged hits land in transport time. The
+  transport has no such anchor yet; it is additive, and belongs with M2's judging.
 - No MIDI, judging, scoring, or Practice/Drill modes yet — those are M2 and M3.
 - A single screen, no router; Dashboard / Library / Results arrive with M3 (§12).

@@ -1,5 +1,6 @@
 import { Emitter } from '@/shared/lib/emitter'
 import { createLookaheadScheduler, type LookaheadScheduler } from '@/shared/lib/audio/scheduler'
+import type { TickSource } from '@/shared/lib/audio/tick-source'
 import type { Clock } from './clock'
 import {
   isBeatStep,
@@ -50,6 +51,8 @@ export interface TransportOptions extends TransportConfig {
    *  events are scheduled in the future rather than in the past. */
   startLeadSec?: number
   countInBars?: number
+  /** Override the scheduler heartbeat (tests inject a fake-timer source). */
+  tickSource?: TickSource
 }
 
 /**
@@ -83,7 +86,7 @@ export class Transport {
   private stopAtTime: number | undefined
 
   constructor(options: TransportOptions) {
-    const { clock, startLeadSec = 0.06, countInBars = 0, ...config } = options
+    const { clock, startLeadSec = 0.06, countInBars = 0, tickSource, ...config } = options
     this.clock = clock
     this.config = config
     this.startLeadSec = startLeadSec
@@ -91,6 +94,7 @@ export class Transport {
     this.rangeEnd = config.bars * stepsPerBar(config.timeSig, config.subdivision)
     this.scheduler = createLookaheadScheduler({
       clock,
+      tickSource,
       onWindow: (_start, end) => {
         this.pumpWindow(end)
       },
@@ -266,8 +270,13 @@ export class Transport {
     return event
   }
 
+  /** Which heartbeat the scheduler ended up with (§7.3 diagnostics). */
+  get tickKind(): TickSource['kind'] {
+    return this.scheduler.tickKind
+  }
+
   dispose(): void {
-    this.scheduler.stop()
+    this.scheduler.dispose()
     this.emitter.clear()
   }
 
