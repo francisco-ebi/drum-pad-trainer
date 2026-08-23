@@ -1,0 +1,167 @@
+{
+  "id": "basic-16th-beat",
+  "title": "Basic 16th note beat",
+  "level": 2,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 1,
+  "bpmDefault": 70,
+  "bpmRange": [
+    40,
+    140
+  ],
+  "countLabels": [
+    "1",
+    "e",
+    "&",
+    "a",
+    "2",
+    "e",
+    "&",
+    "a",
+    "3",
+    "e",
+    "&",
+    "a",
+    "4",
+    "e",
+    "&",
+    "a"
+  ],
+  "lanes": [
+    "hihat",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 1,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 9,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 11,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 13,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 15,
+      "voice": "hihat",
+      "hand": "L"
+    }
+  ],
+  "drill": {
+    "targetBpm": 80,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "strictHands": true,
+    "notes": "Lead hand on the numbers and the &, alternate hand on every e and a."
+  }
+}

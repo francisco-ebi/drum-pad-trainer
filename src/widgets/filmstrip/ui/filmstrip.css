@@ -1,0 +1,93 @@
+.strip {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-3);
+}
+
+.strip__frames {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.strip__frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  /* Frames never move horizontally — only transform/opacity animate (§6.2). */
+  transform-origin: center bottom;
+  transition:
+    transform var(--t-flash) var(--ease),
+    opacity var(--t-flash) var(--ease),
+    border-color var(--t-flash) var(--ease),
+    box-shadow var(--t-flash) var(--ease);
+}
+.strip__frame.is-past { opacity: 0.55; }
+.strip__frame.is-active {
+  transform: scale(1.06);
+  border-color: var(--c-accent);
+  box-shadow: 0 6px 22px rgb(0 0 0 / 0.45);
+  opacity: 1;
+}
+.strip__frame.is-outside { opacity: 0.25; }
+
+.strip__pads {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+.strip__pad {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  background: var(--c-pad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strip__mark { width: 11px; height: 11px; }
+.strip__mark--lead { background: var(--c-pad-lead); border-radius: 50%; }
+.strip__mark--alt { background: var(--c-pad-alt); border-radius: 2px; transform: rotate(45deg) scale(0.9); }
+
+.strip__caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--c-text-dim);
+  white-space: nowrap;
+}
+.strip__frame.is-active .strip__caption { color: var(--c-text); font-weight: 700; }
+
+.strip__legend {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+  margin-top: var(--sp-3);
+  font-size: 12px;
+  color: var(--c-text-dim);
+}
+.strip__legend span { display: inline-flex; align-items: center; gap: var(--sp-2); }
+
+/* Now / Next collapse on narrow viewports (§6.2). */
+.strip--compact .strip__frame:not(.is-active):not(.is-next) { display: none; }
+.strip--compact .strip__pad { width: 34px; height: 34px; border-radius: var(--r-sm); }
+.strip--compact .strip__mark { width: 24px; height: 24px; }
+.strip--compact .strip__caption { font-size: 15px; }
+
+@media (max-width: 900px) {
+  .strip__frame:not(.is-active):not(.is-next) { display: none; }
+  .strip__pad { width: 30px; height: 30px; border-radius: var(--r-sm); }
+  .strip__mark { width: 21px; height: 21px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip__frame.is-active { transform: none; outline: 2px solid var(--c-accent); }
+}

@@ -1,1 +1,12 @@
 node_modules
+dist
+coverage
+*.local
+.DS_Store
+
+# yarn (node-modules linker)
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+.pnp.*
+*.tsbuildinfo

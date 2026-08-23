@@ -1,0 +1,113 @@
+{
+  "id": "variation-1",
+  "title": "Variation #1",
+  "level": 3,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 8,
+  "bars": 1,
+  "bpmDefault": 80,
+  "bpmRange": [
+    50,
+    150
+  ],
+  "countLabels": [
+    "1",
+    "a",
+    "2",
+    "a",
+    "3",
+    "a",
+    "4",
+    "a"
+  ],
+  "lanes": [
+    "openhat",
+    "hihat",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 1,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "openhat"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "kick"
+    }
+  ],
+  "drill": {
+    "targetBpm": 90,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "The open hi-hat lands on the last & — let it ring into beat 1."
+  }
+}

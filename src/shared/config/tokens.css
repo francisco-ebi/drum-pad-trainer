@@ -1,0 +1,71 @@
+/* Design tokens (§13: plain CSS with custom properties, no framework).
+   Voice colours are fixed app-wide per §6.1 and are always paired with a
+   shape or label in the UI — never colour alone (§15, colour-blind safety). */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --c-bg: #0e1116;
+  --c-surface: #161b22;
+  --c-surface-2: #1c232c;
+  --c-surface-3: #232c37;
+  --c-border: #2c3540;
+  --c-border-strong: #3d4956;
+
+  /* Text */
+  --c-text: #e8edf3;
+  --c-text-dim: #9aa7b4;
+  --c-text-faint: #6b7885;
+
+  /* Accents */
+  --c-accent: #4c9aff;
+  --c-accent-soft: #1d3a5f;
+  --c-active: #ffffff;
+  --c-danger: #ff5c5c;
+  --c-good: #3ddc84;
+
+  /* Voice identity (§6.1) */
+  --c-voice-hihat: #ff8c26;
+  --c-voice-openhat: #4c9aff;
+  --c-voice-snare: #a97cff;
+  --c-voice-kick: #3ddc84;
+  --c-voice-ride: #2fd4c4;
+  --c-voice-sidestick: #ff5cc8;
+  --c-voice-tomLow: #b8621b;
+  --c-voice-tomMid: #d98324;
+  --c-voice-tomHigh: #f0a63c;
+  --c-voice-cymbalA: #ffd54a;
+  --c-voice-cymbalB: #e0b93a;
+  --c-voice-cymbalC: #c9a52f;
+
+  /* Filmstrip pad tokens (§6.2) */
+  --c-pad: #2a323c;
+  --c-pad-lead: #ff4b3e;
+  --c-pad-alt: #ff9f1c;
+
+  /* Geometry */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+
+  /* Motion (§6.4) */
+  --t-pulse: 120ms;
+  --t-flash: 150ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  --font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-pulse: 1ms;
+    --t-flash: 1ms;
+  }
+}
