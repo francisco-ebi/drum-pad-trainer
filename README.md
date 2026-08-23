@@ -3,8 +3,8 @@
 A browser-based drum trainer driven by a 4×4 MIDI pad controller.
 See [SPEC.md](SPEC.md) for the full product and technical specification.
 
-**Current milestone: M2 — "It listens"** (MIDI input, judging, Practice mode).
-M1 ("It plays") is complete.
+**Current milestone: M3 — "It teaches"** (curriculum, progression, meta-game).
+M1 ("It plays") and M2 ("It listens") are complete.
 
 ## Getting started
 
@@ -23,6 +23,36 @@ yarn dev
 | `yarn lint` | Steiger — fails on Feature-Sliced Design violations (§13.2) |
 
 Chromium-based desktop browsers are the primary target (§3).
+
+## What M3 ships so far
+
+- **Curriculum** (§11.1) — `entities/drill`: three tracks and thirteen drills over
+  twelve patterns, with stars at the drill's target tempo and the soft 2★ track
+  gate. Drills are separate from patterns, so one pattern can carry both a
+  lenient introduction and a strict-hands variant.
+- **Progression** (§11.2) — `entities/progress`: stars, XP and levels, the daily
+  streak, the weekly goal, badges and speed trophies, all persisted under a
+  versioned key. Everything recorded is a high-water mark — a bad take never
+  costs you what you already earned.
+- **Assessed drills** (§9.3) — `features/assess-drill`: a take under the drill's
+  fixed rules for a fixed number of loops, producing stars and a progress entry.
+  An interrupted take is shown but never recorded.
+- **Dashboard and Library** (§12) — level, streak, weekly goal, practice heatmap,
+  badges and "continue where you left off"; tracks and drill cards with stars,
+  speed trophies and lock state.
+- **Settings** (§12) — device, mapping, calibration, left-handed swap, weekly
+  goal, and export / import / erase (§14).
+- **Routing** — `react-router-dom`, with the basename from `import.meta.env.BASE_URL`
+  and a `404.html` fallback so deep links survive GitHub Pages.
+
+### Still to do for M3
+
+- **Onboarding** (§12): connect → mapping → calibration → first drill as a guided
+  first-run flow. The pieces all exist in Settings; they are not yet sequenced.
+- **Results as its own route** (§12). It currently renders in place on the
+  Session screen, which works but is not the screen the spec describes.
+- Tracks 4 (fills & toms) and 5 (tempo mastery) from §11.1 are declared but not
+  seeded; fills need tom patterns that are not authored yet.
 
 ## What M2 ships
 
@@ -84,13 +114,20 @@ cross-entity imports go through `@x` (e.g. `entities/pattern/@x/device`).
 
 ```
 src/
-  app/                 shell, global styles, error boundary
-  pages/session/       the core screen (§12)
-  widgets/             sequencer · filmstrip · transport-bar
-  features/            watch-playback
-  entities/            pattern · device
-  shared/              lib/{audio,transport,testing} · ui · config
+  app/                 shell, router, global styles, error boundary
+  pages/               dashboard · library · session · settings
+  widgets/             sequencer · filmstrip · live-pad · transport-bar
+                       practice-hud · results-panel · progress-heatmap
+  features/            watch-playback · practice-take · assess-drill
+                       map-controller · calibrate-latency · transfer-progress
+                       virtual-midi (dev)
+  entities/            pattern · device · take · drill · progress
+  shared/              lib/{audio,transport,midi,persist,testing} · ui · config
 ```
+
+The take runner lives in `entities/take` alongside the judge it drives, because
+Practice and Drill are two scenarios over the same machinery — and features may
+not import each other.
 
 `widgets/sequencer` and `widgets/filmstrip` are purely presentational: every
 animated value arrives as a prop, which is what makes the filmstrip's static
@@ -133,12 +170,11 @@ AudioWorklet clock later is a change to one file behind that interface.
 
 ## Known gaps / follow-ups
 
-- **Results are a panel, not a screen.** §12 lists Results as its own route;
-  with no router yet it renders in place on the Session screen. It moves when
-  M3 adds routing.
-- **Drills, curriculum and the meta-game** are M3: stars, gating, XP, streaks,
-  badges, Dashboard, Library, onboarding. `PracticeSession` already accepts the
-  `maxLoops` an assessed take needs.
+- See "Still to do for M3" above.
 - **No browser e2e run yet.** Playwright and the browser-mode Vitest environment
-  land with the rest of M3's testing work; the Web Audio rendering assertions in
+  are still outstanding; the Web Audio rendering assertions in
   `synth-kit.test.ts` are `skipIf`-guarded until then.
+- **Timing work runs off the main thread's frame loop.** The scheduler, the take's
+  settle pass and the virtual-MIDI player all pulse from a worker timer rather
+  than `requestAnimationFrame`, so a take keeps time and finishes correctly in a
+  background tab. Only drawing uses frames.

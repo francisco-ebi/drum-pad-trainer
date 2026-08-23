@@ -1,6 +1,6 @@
-import { resolvePad, type PadLayout } from '@/entities/device'
-import { hitHand, hitsAtStep, type PatternIndex, type Voice } from '@/entities/pattern'
-import type { ExpectedHit } from '@/entities/take'
+import { resolvePad, type PadLayout } from '@/entities/device/@x/take'
+import { hitHand, hitsAtStep, type PatternIndex, type Voice } from '@/entities/pattern/@x/take'
+import type { ExpectedHit } from '../model/types'
 
 export interface ExpectedContext {
   index: PatternIndex

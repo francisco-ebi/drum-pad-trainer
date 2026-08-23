@@ -1,5 +1,6 @@
 import { VOICE_META } from '@/entities/pattern'
-import { LANE_PRESETS, usePracticeTake } from '@/features/practice-take'
+import { LANE_PRESETS } from '@/entities/take'
+import { usePracticeTake } from '@/features/practice-take'
 import { Button } from '@/shared/ui'
 
 /** Lane assignment and take rules (§9.2), shown between takes. */

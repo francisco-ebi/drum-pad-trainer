@@ -6,10 +6,16 @@ import {
   type PadStrike,
 } from '@/entities/device'
 import { indexPattern, stepCount, type Pattern, type Voice } from '@/entities/pattern'
-import type { ExpectedHit, Judgment, TakeResult, TakeStats } from '@/entities/take'
+import type { Judgment, TakeResult, TakeStats } from '@/entities/take'
 import { audioAvailable, getAudioEngine, getTransport, primeAudio } from '@/shared/lib/runtime'
-import { buildLaneRoles, LANE_PRESETS, type LaneRoles } from '../lib/lane-roles'
-import { PracticeSession, type TakeInterruption } from './session'
+import {
+  buildLaneRoles,
+  LANE_PRESETS,
+  PracticeSession,
+  type ExpectedHit,
+  type LaneRoles,
+  type TakeInterruption,
+} from '@/entities/take'
 
 /** Consecutive clean loops before the ladder raises the tempo (§9.2). */
 export const LADDER_CLEAN_LOOPS = 2

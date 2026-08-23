@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { indexPattern } from '../lib/query'
 import { validatePattern } from '../lib/validate'
 import type { Pattern, Voice } from '../model/types'
-import { getPattern, SEED_PATTERNS } from './index'
+import { getPattern, REFERENCE_PATTERN_IDS, SEED_PATTERNS } from './index'
 
 /** Render one lane as a string so a seed can be read against the §5.1 tables. */
 function lane(pattern: Pattern, voice: Voice): string {
@@ -22,12 +22,39 @@ describe('seed patterns', () => {
     }
   })
 
-  it('ships the three reference patterns with unique ids', () => {
-    expect(SEED_PATTERNS.map((p) => p.id)).toEqual([
-      'basic-8th-beat',
-      'basic-16th-beat',
-      'variation-1',
-    ])
+  it('ships the three reference patterns from §5.1', () => {
+    for (const id of REFERENCE_PATTERN_IDS) {
+      expect(getPattern(id)).toBeDefined()
+    }
+  })
+
+  it('gives every pattern a unique id', () => {
+    const ids = SEED_PATTERNS.map((pattern) => pattern.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('ships enough patterns to build the seed curriculum (§16 M3)', () => {
+    expect(SEED_PATTERNS.length).toBeGreaterThanOrEqual(12)
+  })
+
+  it('keeps every pattern playable at its default tempo', () => {
+    for (const pattern of SEED_PATTERNS) {
+      const [min, max] = pattern.bpmRange
+      expect({ id: pattern.id, ok: pattern.bpmDefault >= min && pattern.bpmDefault <= max }).toEqual({
+        id: pattern.id,
+        ok: true,
+      })
+    }
+  })
+
+  it('gives every pattern a drill block with coaching notes', () => {
+    for (const pattern of SEED_PATTERNS) {
+      expect({ id: pattern.id, hasDrill: pattern.drill !== undefined }).toEqual({
+        id: pattern.id,
+        hasDrill: true,
+      })
+      expect(pattern.drill?.notes?.length ?? 0).toBeGreaterThan(0)
+    }
   })
 
   it('Basic 8th note beat matches the reference table', () => {

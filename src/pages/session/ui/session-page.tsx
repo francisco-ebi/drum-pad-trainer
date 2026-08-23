@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { CalibrationPanel } from '@/features/calibrate-latency'
 import { MappingPanel } from '@/features/map-controller'
 import {
@@ -15,6 +16,8 @@ import {
   type VirtualPlayer,
 } from '@/features/virtual-midi'
 import { getPadInput, useDeviceStore } from '@/entities/device'
+import { getDrill } from '@/entities/drill'
+import { pendingDrillExpected, useAssessDrill } from '@/features/assess-drill'
 import { getAudioEngine, getTransport } from '@/shared/lib/runtime'
 import {
   audioAvailable,
@@ -34,6 +37,7 @@ import { ResultsPanel } from '@/widgets/results-panel'
 import { Sequencer } from '@/widgets/sequencer'
 import { TransportBar, type SessionMode } from '@/widgets/transport-bar'
 import { Button } from '@/shared/ui'
+import { DrillMode } from './drill-mode'
 import { PracticeOptions } from './practice-options'
 import './session-page.css'
 
@@ -64,6 +68,12 @@ function feedbackFor(judgment: Judgment | undefined): PadFeedback | undefined {
 /** The core screen (§12): sequencer on top, filmstrip or live pad below,
  *  transport docked. */
 export function SessionPage() {
+  const { drillId } = useParams()
+  const [searchParams] = useSearchParams()
+  const drill = drillId ? getDrill(drillId) : undefined
+  // A locked track opens in Watch mode only — the soft gate from §11.1.
+  const previewOnly = searchParams.get('mode') === 'watch'
+
   const [mode, setMode] = useState<SessionMode>('watch')
   const [compact, setCompact] = useState(false)
   const virtualPlayer = useRef<VirtualPlayer | null>(null)
@@ -95,11 +105,22 @@ export function SessionPage() {
   const sessionBestBpm = usePracticeTake((s) => s.sessionBestBpm)
   const injectStrike = usePracticeTake((s) => s.injectStrike)
 
+  const loadDrill = useAssessDrill((s) => s.load)
+  const loadPattern = useWatchPlayback((s) => s.loadPattern)
+
+  // Opening a drill loads its pattern into the session (§9.3).
+  useEffect(() => {
+    if (!drill) return
+    loadPattern(drill.patternId)
+    loadDrill(drill.id)
+  }, [drill, loadDrill, loadPattern])
+
   const activeStep = usePlayheadStep()
   const getPosition = usePlayheadPosition()
   const countInBeats = useCountInBeats()
   const isPractice = mode === 'practice'
-  useWatchHotkeys(!isPractice)
+  const isDrill = mode === 'drill'
+  useWatchHotkeys(mode === 'watch')
 
   // Web MIDI is requested on entry to a playing screen, never on landing (§17).
   useEffect(() => {
@@ -109,9 +130,9 @@ export function SessionPage() {
 
   // Only one mode drives the transport's step events at a time.
   useEffect(() => {
-    if (!audioAvailable() || isPractice) return
+    if (!audioAvailable() || mode !== 'watch') return
     return connectWatchPlayback()
-  }, [isPractice])
+  }, [mode])
 
   useEffect(() => {
     if (!isPractice) return
@@ -133,17 +154,22 @@ export function SessionPage() {
   }, [isPractice, retryTake])
 
   /** Dev tool (§13.3): play the running take for us, in a chosen style. */
-  const runScripted = useCallback((style: PlayStyle) => {
-    if (!audioAvailable()) return
-    virtualPlayer.current?.stop()
-    const player = createVirtualPlayer({
-      input: getPadInput(),
-      transport: getTransport(),
-      clock: getAudioEngine().clock,
-    })
-    virtualPlayer.current = player
-    player.follow({ getPending: pendingExpected, style, random: seededRandom(1) })
-  }, [])
+  const runScripted = useCallback(
+    (style: PlayStyle) => {
+      if (!audioAvailable()) return
+      virtualPlayer.current?.stop()
+      const player = createVirtualPlayer({
+        input: getPadInput(),
+        transport: getTransport(),
+        clock: getAudioEngine().clock,
+      })
+      virtualPlayer.current = player
+      // Practice and Drill each run their own take, so follow whichever is live.
+      const getPending = isDrill ? pendingDrillExpected : pendingExpected
+      player.follow({ getPending, style, random: seededRandom(1) })
+    },
+    [isDrill],
+  )
 
   useEffect(() => {
     if (practiceStatus === 'running') return
@@ -167,13 +193,21 @@ export function SessionPage() {
   return (
     <div className="session">
       <header className="session__head">
-        <h1 className="session__title">{pattern.title}</h1>
+        <h1 className="session__title">{drill?.title ?? pattern.title}</h1>
         <span className="session__level">Level {pattern.level}</span>
         <span className="session__meta">
           {pattern.timeSig[0]}/{pattern.timeSig[1]} · {pattern.subdivision === 16 ? '16th' : '8th'} notes ·{' '}
           {pattern.bpmRange[0]}–{pattern.bpmRange[1]} BPM
         </span>
-        {pattern.drill?.notes && <p className="session__notes">{pattern.drill.notes}</p>}
+        {drill && (
+          <span className="session__level">
+            Drill · target {drill.targetBpm} BPM{drill.strictHands ? ' · strict hands' : ''}
+          </span>
+        )}
+        {previewOnly && <span className="session__level">Preview</span>}
+        {(drill?.notes ?? pattern.drill?.notes) && (
+          <p className="session__notes">{drill?.notes ?? pattern.drill?.notes}</p>
+        )}
       </header>
 
       {!audioAvailable() && (
@@ -197,7 +231,16 @@ export function SessionPage() {
           getPosition={getPosition}
         />
 
-        {isPractice ? (
+        {isDrill ? (
+          <DrillMode
+            index={index}
+            onDrillWeakSpot={(step) => {
+              setRange(step, step + 1)
+              setMode('practice')
+            }}
+            {...(import.meta.env.DEV ? { onRunScripted: runScripted } : {})}
+          />
+        ) : isPractice ? (
           <>
             <PracticeHud
               stats={stats}
@@ -281,7 +324,12 @@ export function SessionPage() {
       </div>
 
       <div className="session__dock">
-        <TransportBar mode={mode} onModeChange={setMode} />
+        <TransportBar
+          mode={mode}
+          onModeChange={setMode}
+          drillAvailable={drill !== undefined}
+          previewOnly={previewOnly}
+        />
       </div>
 
       {countInBeats > 0 && (

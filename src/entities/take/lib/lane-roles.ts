@@ -1,4 +1,4 @@
-import type { Voice } from '@/entities/pattern'
+import type { Voice } from '@/entities/pattern/@x/take'
 
 /** Each lane is either played by the user or by the app (§9.2). */
 export type LaneRole = 'user' | 'auto'

@@ -51,3 +51,15 @@ button { font-family: inherit; }
   color: var(--c-text-dim);
   white-space: pre-wrap;
 }
+
+.app__nav { display: flex; gap: var(--sp-1); }
+.app__link {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  color: var(--c-text-dim);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+.app__link:hover { background: var(--c-surface-2); color: var(--c-text); }
+.app__link.is-active { background: var(--c-accent-soft); color: var(--c-text); }

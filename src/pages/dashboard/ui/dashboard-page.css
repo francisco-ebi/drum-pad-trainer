@@ -1,0 +1,62 @@
+.dash { display: flex; flex-direction: column; gap: var(--sp-5); padding: var(--sp-4); }
+
+.dash__hero {
+  display: flex;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+
+.dash__level { display: flex; flex-direction: column; gap: var(--sp-1); min-width: 180px; }
+.dash__level-line { display: flex; align-items: baseline; gap: var(--sp-2); }
+.dash__level-number { font-size: 34px; font-weight: 800; line-height: 1; }
+.dash__bar { height: 6px; border-radius: 999px; background: var(--c-surface-3); overflow: hidden; }
+.dash__bar-fill { height: 100%; background: var(--c-accent); }
+
+.dash__stat { display: flex; flex-direction: column; gap: 2px; min-width: 96px; }
+.dash__label {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--c-text-faint);
+}
+.dash__value { font-family: var(--font-mono); font-size: 24px; font-weight: 700; line-height: 1; }
+.dash__sub { font-size: 11px; color: var(--c-text-dim); }
+
+.dash__section {
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+.dash__section-title {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+  margin: 0 0 var(--sp-3);
+}
+
+.dash__next { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
+.dash__next-title { font-size: 17px; font-weight: 700; }
+.dash__next-meta { color: var(--c-text-dim); font-size: 13px; }
+
+.dash__badges { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.dash__badge {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  font-size: 12px;
+}
+.dash__badge--locked { opacity: 0.35; }
+.dash__badge-icon { font-size: 16px; }
+
+.dash__goal-track { height: 8px; border-radius: 999px; background: var(--c-surface-3); overflow: hidden; margin-top: var(--sp-2); }
+.dash__goal-fill { height: 100%; background: var(--c-good); }

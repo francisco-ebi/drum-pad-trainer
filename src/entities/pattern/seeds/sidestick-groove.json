@@ -1,0 +1,107 @@
+{
+  "id": "sidestick-groove",
+  "title": "Sidestick groove",
+  "level": 3,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 8,
+  "bars": 1,
+  "bpmDefault": 75,
+  "bpmRange": [
+    50,
+    150
+  ],
+  "countLabels": [
+    "1",
+    "a",
+    "2",
+    "a",
+    "3",
+    "a",
+    "4",
+    "a"
+  ],
+  "lanes": [
+    "hihat",
+    "sidestick",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 1,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "sidestick"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "sidestick"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "hihat"
+    }
+  ],
+  "drill": {
+    "targetBpm": 85,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "Sidestick replaces the snare — quieter, so keep the hats down to match."
+  }
+}

@@ -1,4 +1,26 @@
 export { TakeJudge } from './lib/judge'
+export { PracticeSession, STRICT_MISS_LIMIT } from './model/session'
+export type {
+  PracticeSessionCallbacks,
+  PracticeSessionConfig,
+  PracticeUpdate,
+  TakeAudio,
+  TakeInterruption,
+  TakeRuntime,
+} from './model/session'
+export {
+  buildTakeTimeline,
+  expectedHitsForStep,
+  upcomingWithin,
+} from './lib/expected-timeline'
+export type { ExpectedContext, TimelineOptions } from './lib/expected-timeline'
+export {
+  buildLaneRoles,
+  hasNoUserLanes,
+  isUserLane,
+  LANE_PRESETS,
+} from './lib/lane-roles'
+export type { LanePreset, LaneRole, LaneRoles } from './lib/lane-roles'
 export { judgeTake } from './lib/judge-take'
 export {
   buildHistogram,

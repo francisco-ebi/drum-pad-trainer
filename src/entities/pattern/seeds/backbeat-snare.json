@@ -1,0 +1,50 @@
+{
+  "id": "backbeat-snare",
+  "title": "Backbeat snare",
+  "level": 1,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 8,
+  "bars": 1,
+  "bpmDefault": 70,
+  "bpmRange": [
+    40,
+    140
+  ],
+  "countLabels": [
+    "1",
+    "a",
+    "2",
+    "a",
+    "3",
+    "a",
+    "4",
+    "a"
+  ],
+  "lanes": [
+    "snare"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "snare"
+    }
+  ],
+  "drill": {
+    "targetBpm": 80,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "Snare on 2 and 4 — the backbeat. Count the 1 and 3 out loud."
+  }
+}

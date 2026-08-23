@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { applyCalibration, computeCalibration, resolvePad } from '@/entities/device'
 import { getPattern, indexPattern, type Pattern } from '@/entities/pattern'
-import { judgeTake, type UserHit } from '@/entities/take'
+import { buildTakeTimeline, judgeTake, type UserHit } from '@/entities/take'
 import { secondsPerStep } from '@/shared/lib/transport'
-import { buildTakeTimeline } from './expected-timeline'
 
 /**
  * The M2 acceptance criterion (§16): a scripted take at a constant +20 ms

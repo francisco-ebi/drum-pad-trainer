@@ -1,12 +1,23 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPadInput, type PadInput, type PadStrike } from '@/entities/device'
 import { getPattern, indexPattern, type Pattern } from '@/entities/pattern'
-import type { TakeResult } from '@/entities/take'
+import {
+  buildLaneRoles,
+  PracticeSession,
+  type PracticeSessionConfig,
+  type PracticeUpdate,
+  type TakeAudio,
+  type TakeResult,
+} from '@/entities/take'
 import { intervalTickSource } from '@/shared/lib/audio'
 import { runFor, TestClock } from '@/shared/lib/testing'
 import { Transport } from '@/shared/lib/transport'
-import { buildLaneRoles } from '../lib/lane-roles'
-import { PracticeSession, type PracticeSessionConfig, type TakeAudio, type PracticeUpdate } from './session'
+
+/**
+ * A take is a device playing a pattern, judged — so this integration test
+ * lives with the feature that composes those three, where reaching for each
+ * entity's public API is legitimate.
+ */
 
 function loadPattern(id: string): Pattern {
   const pattern = getPattern(id)

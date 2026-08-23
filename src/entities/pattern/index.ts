@@ -27,6 +27,7 @@ export type { VoiceMeta } from './config/voices'
 export {
   DEFAULT_PATTERN_ID,
   getPattern,
+  REFERENCE_PATTERN_IDS,
   SEED_PATTERNS,
   SEED_PATTERNS_BY_ID,
 } from './seeds'

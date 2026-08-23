@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Voice } from '@/entities/pattern'
+import type { Voice } from '@/entities/pattern/@x/take'
 import { buildLaneRoles, hasNoUserLanes, isUserLane, LANE_PRESETS } from './lane-roles'
 
 const LANES: Voice[] = ['openhat', 'hihat', 'snare', 'kick']

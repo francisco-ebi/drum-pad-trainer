@@ -1,0 +1,102 @@
+{
+  "id": "ride-groove",
+  "title": "Ride groove",
+  "level": 3,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 8,
+  "bars": 1,
+  "bpmDefault": 80,
+  "bpmRange": [
+    50,
+    160
+  ],
+  "countLabels": [
+    "1",
+    "a",
+    "2",
+    "a",
+    "3",
+    "a",
+    "4",
+    "a"
+  ],
+  "lanes": [
+    "ride",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 1,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "ride"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "ride"
+    }
+  ],
+  "drill": {
+    "targetBpm": 90,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "Same groove, moved to the ride. Aim for the bell-free centre of the cymbal."
+  }
+}

@@ -6,11 +6,15 @@ import { Button, Slider } from '@/shared/ui'
 import { useTapTempo } from '../lib/use-tap-tempo'
 import './transport-bar.css'
 
-export type SessionMode = 'watch' | 'practice'
+export type SessionMode = 'watch' | 'practice' | 'drill'
 
 export interface TransportBarProps {
   mode: SessionMode
   onModeChange: (mode: SessionMode) => void
+  /** Offer the assessed-take mode; only meaningful with a drill loaded. */
+  drillAvailable?: boolean
+  /** Lock the mode switch to Watch — a locked track's preview (§11.1). */
+  previewOnly?: boolean
   /** Rendered at the end of the bar. */
   children?: ReactNode
 }
@@ -22,7 +26,13 @@ export interface TransportBarProps {
  * Watch scrubs and loops freely, Practice starts and ends takes — so the bar
  * swaps its middle section rather than showing controls that do nothing.
  */
-export function TransportBar({ mode, onModeChange, children }: TransportBarProps) {
+export function TransportBar({
+  mode,
+  onModeChange,
+  drillAvailable = false,
+  previewOnly = false,
+  children,
+}: TransportBarProps) {
   const pattern = useWatchPlayback((s) => s.pattern)
   const transportState = useWatchPlayback((s) => s.transportState)
   const bpm = useWatchPlayback((s) => s.bpm)
@@ -54,6 +64,7 @@ export function TransportBar({ mode, onModeChange, children }: TransportBarProps
   const running = practiceStatus === 'running'
   const [minBpm, maxBpm] = pattern.bpmRange
   const isPractice = mode === 'practice'
+  const isDrill = mode === 'drill'
 
   return (
     <div className="tbar">
@@ -61,12 +72,25 @@ export function TransportBar({ mode, onModeChange, children }: TransportBarProps
         <Button aria-pressed={mode === 'watch'} onClick={() => onModeChange('watch')}>
           Watch
         </Button>
-        <Button aria-pressed={isPractice} onClick={() => onModeChange('practice')}>
+        <Button
+          aria-pressed={isPractice}
+          disabled={previewOnly}
+          onClick={() => onModeChange('practice')}
+        >
           Practice
         </Button>
+        {drillAvailable && (
+          <Button aria-pressed={isDrill} disabled={previewOnly} onClick={() => onModeChange('drill')}>
+            Drill
+          </Button>
+        )}
       </div>
 
-      {isPractice ? (
+      {isDrill ? (
+        <div className="tbar__group">
+          <span className="tbar__status">assessed take</span>
+        </div>
+      ) : isPractice ? (
         <div className="tbar__group">
           <Button
             variant="primary"
@@ -91,6 +115,7 @@ export function TransportBar({ mode, onModeChange, children }: TransportBarProps
         </div>
       )}
 
+      {!isDrill && (
       <div className="tbar__group">
         <Slider
           label="Tempo"
@@ -104,6 +129,7 @@ export function TransportBar({ mode, onModeChange, children }: TransportBarProps
           Tap
         </Button>
       </div>
+      )}
 
       {!isPractice && (
         <div className="tbar__group">

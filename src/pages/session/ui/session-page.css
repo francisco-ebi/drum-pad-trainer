@@ -69,3 +69,5 @@
 .session__options { display: flex; flex-direction: column; gap: var(--sp-2); }
 .session__stage { font-family: var(--font-mono); font-size: 12px; color: var(--c-text-dim); }
 .session__hint { font-size: 11px; color: var(--c-text-faint); }
+
+.drill__stars { font-size: 22px; letter-spacing: 3px; color: var(--c-voice-cymbalA); }

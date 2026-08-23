@@ -1,19 +1,19 @@
-import { applyCalibration, type PadInput, type PadStrike } from '@/entities/device'
-import { DYNAMICS, hitsAtStep, VOICE_META, type PatternIndex } from '@/entities/pattern'
-import {
-  loopAccuracy,
-  summarize,
-  TakeJudge,
-  type Judgment,
-  type TakeResult,
-  type TakeStats,
-} from '@/entities/take'
+import { applyCalibration, type PadInput, type PadStrike } from '@/entities/device/@x/take'
+import { DYNAMICS, hitsAtStep, VOICE_META, type PatternIndex } from '@/entities/pattern/@x/take'
+import { defaultTickSource, type TickSource } from '@/shared/lib/audio'
 import type { StepEvent, Transport } from '@/shared/lib/transport'
 import { expectedHitsForStep } from '../lib/expected-timeline'
 import { isUserLane, type LaneRoles } from '../lib/lane-roles'
+import { loopAccuracy } from '../lib/score'
+import { summarize, type TakeResult } from '../lib/analyze'
+import { TakeJudge } from '../lib/judge'
+import type { Judgment, TakeStats } from './types'
 
 /** Consecutive misses that end a take in strict mode (§9.2). */
 export const STRICT_MISS_LIMIT = 8
+
+/** How often a running take settles misses and checks for its own end. */
+export const SETTLE_INTERVAL_MS = 16
 
 /** The slice of the audio engine a take needs — narrow enough to fake. */
 export interface TakeAudio {
@@ -25,6 +25,12 @@ export interface TakeAudio {
 export interface TakeRuntime {
   transport: Transport
   audio: TakeAudio
+  /**
+   * Pulse for settling and end-of-take checks. Defaults to the worker timer:
+   * this is judging work, not drawing, and `requestAnimationFrame` stops in a
+   * hidden tab — which would freeze a take mid-flight instead of scoring it.
+   */
+  tickSource?: TickSource
 }
 
 export interface PracticeSessionConfig {
@@ -73,7 +79,7 @@ export interface PracticeSessionCallbacks {
 export class PracticeSession {
   private readonly judge: TakeJudge
   private readonly unsubscribe: (() => void)[] = []
-  private frame: number | undefined
+  private ticker: TickSource | undefined
   private running = false
   private waiting: ReturnType<typeof expectedHitsForStep> = []
   private evaluatedLoop = -1
@@ -130,13 +136,16 @@ export class PracticeSession {
     } else {
       transport.play()
     }
+
+    this.ticker = this.runtime.tickSource ?? defaultTickSource()
+    this.ticker.start(SETTLE_INTERVAL_MS, this.tick)
     this.tick()
   }
 
   stop(): TakeResult {
     this.running = false
-    if (this.frame !== undefined) cancelAnimationFrame(this.frame)
-    this.frame = undefined
+    this.ticker?.dispose()
+    this.ticker = undefined
     for (const off of this.unsubscribe) off()
     this.unsubscribe.length = 0
     this.runtime.transport.stop()
@@ -331,7 +340,6 @@ export class PracticeSession {
   private tick = (): void => {
     if (!this.running) return
     this.pump(this.runtime.audio.clock.now())
-    if (this.running) this.frame = requestAnimationFrame(this.tick)
   }
 
   private emit(judgment?: Judgment): void {

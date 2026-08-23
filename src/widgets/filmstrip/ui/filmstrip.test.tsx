@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { indexPattern, SEED_PATTERNS, type Pattern } from '@/entities/pattern'
+import { getPattern, indexPattern, REFERENCE_PATTERN_IDS, SEED_PATTERNS, type Pattern } from '@/entities/pattern'
 import { PAD_COLS } from '@/shared/config'
 import { Filmstrip } from './filmstrip'
 import { spokenCount } from './spoken-count'
@@ -32,8 +32,13 @@ function asciiFilmstrip(pattern: Pattern): string {
 }
 
 describe('filmstrip static render', () => {
-  for (const pattern of SEED_PATTERNS) {
-    it(`matches the reference frames for ${pattern.title}`, () => {
+  // Only the three patterns that have reference screenshots are golden-filed
+  // (§13.3); the rest of the curriculum is covered by the seed schema tests.
+  for (const id of REFERENCE_PATTERN_IDS) {
+    const pattern = getPattern(id)
+    it(`matches the reference frames for ${pattern?.title ?? id}`, () => {
+      expect(pattern).toBeDefined()
+      if (!pattern) return
       expect(asciiFilmstrip(pattern)).toMatchSnapshot()
     })
   }
