@@ -42,6 +42,9 @@ export interface DeviceStore extends DeviceSettings {
   clearCalibration: () => void
   setLeftHanded: (leftHanded: boolean) => void
   forgetDevice: (name: string) => void
+  /** Mark the first-run flow finished or skipped (§12). */
+  completeOnboarding: () => void
+  restartOnboarding: () => void
 }
 
 function persist(settings: DeviceSettings): void {
@@ -155,6 +158,29 @@ export const useDeviceStore = create<DeviceStore>()((set, get) => {
       const devices = { ...state.devices }
       delete devices[name]
       const next: DeviceSettings = { devices, leftHanded: state.leftHanded }
+      set(next)
+      persist(next)
+    },
+
+    completeOnboarding() {
+      const state = get()
+      const next: DeviceSettings = {
+        devices: state.devices,
+        leftHanded: state.leftHanded,
+        ...(state.lastDeviceName ? { lastDeviceName: state.lastDeviceName } : {}),
+        onboardedAt: new Date().toISOString(),
+      }
+      set(next)
+      persist(next)
+    },
+
+    restartOnboarding() {
+      const state = get()
+      const next: DeviceSettings = {
+        devices: state.devices,
+        leftHanded: state.leftHanded,
+        ...(state.lastDeviceName ? { lastDeviceName: state.lastDeviceName } : {}),
+      }
       set(next)
       persist(next)
     },

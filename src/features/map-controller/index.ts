@@ -1,3 +1,5 @@
 export { useLearnMapping, currentPad } from './model/store'
 export type { LearnState } from './model/store'
 export { MappingPanel } from './ui/mapping-panel'
+export { DevicePanel } from './ui/device-panel'
+export { NoteMapPanel } from './ui/note-map-panel'

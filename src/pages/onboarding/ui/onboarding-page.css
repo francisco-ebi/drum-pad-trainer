@@ -1,0 +1,77 @@
+.onb {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.onb__welcome { text-align: center; display: flex; flex-direction: column; gap: var(--sp-3); }
+.onb__welcome h1 { margin: 0; font-size: 30px; }
+.onb__welcome p { margin: 0; color: var(--c-text-dim); }
+
+.onb__rail { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+.onb__pip {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12px;
+  color: var(--c-text-faint);
+}
+.onb__pip-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--c-border-strong);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.onb__pip.is-current { color: var(--c-text); font-weight: 700; }
+.onb__pip.is-current .onb__pip-dot { border-color: var(--c-accent); background: var(--c-accent-soft); }
+.onb__pip.is-done .onb__pip-dot { border-color: var(--c-good); color: var(--c-good); }
+.onb__rail-line { flex: 1; height: 1px; background: var(--c-border); min-width: 8px; }
+
+.onb__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-5);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+}
+.onb__title { margin: 0; font-size: 21px; }
+.onb__blurb { margin: 0; color: var(--c-text-dim); }
+
+.onb__keys {
+  display: grid;
+  grid-template-columns: repeat(4, 40px);
+  gap: 4px;
+  justify-content: center;
+  margin: var(--sp-2) auto;
+}
+.onb__key {
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--c-text-dim);
+  background: var(--c-surface-2);
+}
+
+.onb__actions { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+.onb__spacer { flex: 1; }
+.onb__skip-all {
+  background: none;
+  border: 0;
+  color: var(--c-text-faint);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}

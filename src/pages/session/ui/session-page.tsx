@@ -71,10 +71,13 @@ export function SessionPage() {
   const { drillId } = useParams()
   const [searchParams] = useSearchParams()
   const drill = drillId ? getDrill(drillId) : undefined
+  const requestedMode = searchParams.get('mode')
   // A locked track opens in Watch mode only — the soft gate from §11.1.
-  const previewOnly = searchParams.get('mode') === 'watch'
+  const previewOnly = requestedMode === 'watch'
 
-  const [mode, setMode] = useState<SessionMode>('watch')
+  const [mode, setMode] = useState<SessionMode>(() =>
+    requestedMode === 'drill' && drillId ? 'drill' : 'watch',
+  )
   const [compact, setCompact] = useState(false)
   const virtualPlayer = useRef<VirtualPlayer | null>(null)
 

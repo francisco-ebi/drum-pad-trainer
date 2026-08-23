@@ -25,7 +25,7 @@ export {
 } from './model/note-mapping'
 export type { MappingPreset, MappingPresetId, NoteMapping } from './model/note-mapping'
 
-export { calibrationOf, EMPTY_DEVICE_SETTINGS, isCalibrated } from './model/device-record'
+export { calibrationOf, EMPTY_DEVICE_SETTINGS, hasOnboarded, isCalibrated } from './model/device-record'
 export type { DeviceRecord, DeviceSettings } from './model/device-record'
 
 export { createPadInput } from './model/input'

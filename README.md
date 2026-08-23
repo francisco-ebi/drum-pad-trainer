@@ -45,10 +45,13 @@ Chromium-based desktop browsers are the primary target (§3).
 - **Routing** — `react-router-dom`, with the basename from `import.meta.env.BASE_URL`
   and a `404.html` fallback so deep links survive GitHub Pages.
 
+- **Onboarding** (§12) — a first-time visitor is sent to a guided flow: connect →
+  map → calibrate → first drill, ending on the drill already in Drill mode. The
+  mapping step is dropped for keyboard players, since there is no note map to
+  fill. Every step before the last can be skipped, and Settings can re-run it.
+
 ### Still to do for M3
 
-- **Onboarding** (§12): connect → mapping → calibration → first drill as a guided
-  first-run flow. The pieces all exist in Settings; they are not yet sequenced.
 - **Results as its own route** (§12). It currently renders in place on the
   Session screen, which works but is not the screen the spec describes.
 - Tracks 4 (fills & toms) and 5 (tempo mastery) from §11.1 are declared but not

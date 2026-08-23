@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useDeviceStore } from '@/entities/device'
 import { DEFAULT_WEEKLY_GOAL, useProgress } from '@/entities/progress'
 import { CalibrationPanel } from '@/features/calibrate-latency'
@@ -12,6 +13,7 @@ export function SettingsPage() {
   const setLeftHanded = useDeviceStore((s) => s.setLeftHanded)
   const weeklyGoal = useProgress((s) => s.progress.weeklyGoal)
   const setWeeklyGoal = useProgress((s) => s.setWeeklyGoal)
+  const restartOnboarding = useDeviceStore((s) => s.restartOnboarding)
 
   return (
     <div className="session">
@@ -47,6 +49,16 @@ export function SettingsPage() {
             onChange={setWeeklyGoal}
           />
           <span className="session__hint">Default is {DEFAULT_WEEKLY_GOAL}.</span>
+        </div>
+
+        <div className="session__panel">
+          <span className="session__panel-label">Setup</span>
+          <Link to="/onboarding">
+            <Button onClick={() => restartOnboarding()}>Run setup again</Button>
+          </Link>
+          <span className="session__hint">
+            Walks through connecting, mapping and calibration once more.
+          </span>
         </div>
 
         <TransferPanel />

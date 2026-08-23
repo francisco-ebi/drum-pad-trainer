@@ -25,6 +25,14 @@ export interface DeviceSettings {
   lastDeviceName?: string
   /** Swaps the lead/alternate hand convention globally (§4.2). */
   leftHanded: boolean
+  /**
+   * ISO timestamp of when the first-run flow was finished or skipped (§12).
+   *
+   * It lives here because onboarding is almost entirely about the device —
+   * connect it, map it, measure its latency — and this slice already carries
+   * the preferences that are not tied to one controller.
+   */
+  onboardedAt?: string
 }
 
 export const EMPTY_DEVICE_SETTINGS: DeviceSettings = {
@@ -38,4 +46,8 @@ export function calibrationOf(record: DeviceRecord | undefined): number {
 
 export function isCalibrated(record: DeviceRecord | undefined): boolean {
   return record?.calibrationOffsetMs !== undefined
+}
+
+export function hasOnboarded(settings: Pick<DeviceSettings, 'onboardedAt'>): boolean {
+  return settings.onboardedAt !== undefined
 }
