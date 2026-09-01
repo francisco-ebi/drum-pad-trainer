@@ -1,0 +1,394 @@
+{
+  "id": "afro-funk-1",
+  "title": "Afro-Funk I",
+  "level": 6,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 2,
+  "bpmDefault": 60,
+  "bpmRange": [
+    40,
+    110
+  ],
+  "countLabels": [
+    "1",
+    "+",
+    "2",
+    "+",
+    "3",
+    "+",
+    "4",
+    "+",
+    "5",
+    "+",
+    "6",
+    "+",
+    "7",
+    "+",
+    "8",
+    "+"
+  ],
+  "lanes": [
+    "shaker",
+    "hihat",
+    "tomMid",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 1,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 5,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 9,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 11,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 11,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 13,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 15,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 0,
+      "voice": "shaker"
+    },
+    {
+      "bar": 1,
+      "step": 0,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 1,
+      "step": 1,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 2,
+      "voice": "shaker"
+    },
+    {
+      "bar": 1,
+      "step": 2,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 3,
+      "voice": "shaker"
+    },
+    {
+      "bar": 1,
+      "step": 3,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 3,
+      "voice": "kick"
+    },
+    {
+      "bar": 1,
+      "step": 4,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 4,
+      "voice": "snare"
+    },
+    {
+      "bar": 1,
+      "step": 5,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 6,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 6,
+      "voice": "kick"
+    },
+    {
+      "bar": 1,
+      "step": 7,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 8,
+      "voice": "shaker"
+    },
+    {
+      "bar": 1,
+      "step": 8,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 8,
+      "voice": "tomMid"
+    },
+    {
+      "bar": 1,
+      "step": 9,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 9,
+      "voice": "kick"
+    },
+    {
+      "bar": 1,
+      "step": 10,
+      "voice": "shaker"
+    },
+    {
+      "bar": 1,
+      "step": 10,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 10,
+      "voice": "kick"
+    },
+    {
+      "bar": 1,
+      "step": 11,
+      "voice": "shaker"
+    },
+    {
+      "bar": 1,
+      "step": 11,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 12,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 12,
+      "voice": "tomMid"
+    },
+    {
+      "bar": 1,
+      "step": 12,
+      "voice": "snare"
+    },
+    {
+      "bar": 1,
+      "step": 13,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 13,
+      "voice": "tomMid"
+    },
+    {
+      "bar": 1,
+      "step": 14,
+      "voice": "hihat",
+      "hand": "R"
+    },
+    {
+      "bar": 1,
+      "step": 14,
+      "voice": "tomMid"
+    },
+    {
+      "bar": 1,
+      "step": 15,
+      "voice": "hihat",
+      "hand": "L"
+    },
+    {
+      "bar": 1,
+      "step": 15,
+      "voice": "tomMid"
+    }
+  ],
+  "drill": {
+    "targetBpm": 70,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "Two bars: the first sits on the groove, the second answers with toms. Shakers and hats never stop."
+  }
+}

@@ -2,6 +2,7 @@ import { Emitter } from '@/shared/lib/emitter'
 import { createLookaheadScheduler, type LookaheadScheduler } from '@/shared/lib/audio/scheduler'
 import type { TickSource } from '@/shared/lib/audio/tick-source'
 import { captureAnchor, performanceClock, type Clock, type TimeAnchor } from './clock'
+import { clampSwing, swingUnwarp, swingWarp } from './swing'
 import {
   isBeatStep,
   mod,
@@ -18,6 +19,8 @@ export interface TransportConfig {
   subdivision: number
   timeSig: TimeSig
   bars: number
+  /** Off-beat delay, 0 straight to 1 full triplet feel. Defaults to straight. */
+  swing?: number
 }
 
 /** One scheduled step, placed at an exact clock timestamp. */
@@ -136,6 +139,10 @@ export class Transport {
     return secondsPerStep(this.config.bpm, this.config.subdivision)
   }
 
+  get swing(): number {
+    return clampSwing(this.config.swing ?? 0)
+  }
+
   get patternLength(): number {
     return this.config.bars * this.stepsPerBar
   }
@@ -169,7 +176,7 @@ export class Transport {
   /** Steps since `play()`, negative during count-in. */
   get rawPosition(): number {
     if (this.state !== 'playing') return this.restRaw
-    return this.anchorRaw + (this.clock.now() - this.anchorTime) / this.secondsPerStep
+    return this.rawPositionAtTime(this.clock.now())
   }
 
   /** Whole steps of count-in left, 0 once the pattern is running. */
@@ -215,7 +222,9 @@ export class Transport {
    * times at or after the most recent tempo change.
    */
   rawPositionAtTime(audioSec: number): number {
-    return this.anchorRaw + (audioSec - this.anchorTime) / this.secondsPerStep
+    const swing = this.swing
+    const travelled = (audioSec - this.anchorTime) / this.secondsPerStep
+    return swingUnwarp(swingWarp(this.anchorRaw, swing) + travelled, swing)
   }
 
   /** Pattern-step position at an audio-clock time, wrapped into the loop range. */
@@ -250,6 +259,13 @@ export class Transport {
     } else {
       this.config = { ...this.config, bpm }
     }
+    this.emitter.emit('state', this.state)
+  }
+
+  /** Swing applies immediately; it changes where the *next* steps fall, not
+   *  where the ones already scheduled do. */
+  setSwing(amount: number): void {
+    this.config = { ...this.config, swing: clampSwing(amount) }
     this.emitter.emit('state', this.state)
   }
 
@@ -360,8 +376,17 @@ export class Transport {
     return Math.max(0, Math.min(raw, len))
   }
 
+  /**
+   * Exact clock time of a step position.
+   *
+   * Distances are measured in *swung* position, so an off-beat lands late
+   * while the bar still ends where a straight bar would (§7.3 keeps the loop
+   * honest either way).
+   */
   private timeOfRaw(raw: number): number {
-    return this.anchorTime + (raw - this.anchorRaw) * this.secondsPerStep
+    const swing = this.swing
+    const travelled = swingWarp(raw, swing) - swingWarp(this.anchorRaw, swing)
+    return this.anchorTime + travelled * this.secondsPerStep
   }
 
   private buildEvent(raw: number, time: number): StepEvent {

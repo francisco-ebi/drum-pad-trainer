@@ -11,13 +11,16 @@ export type PadLayout = readonly (readonly Voice[])[]
  *    columns so either hand can play them;
  *  - two hi-hat pads (row 2, cols 1 and 3) make alternating-hands 16ths
  *    playable — lead hand on one pad, alternate hand on the other;
- *  - the outer columns are "colours" (cymbals, sidesticks) with toms on top,
- *    mimicking a kit's spatial logic.
+ *  - the outer columns are "colours" (cymbals, sidestick, shaker) with toms on
+ *    top, mimicking a kit's spatial logic.
+ *
+ * The shaker sits on (3,1), which §4.1 gave to a second sidestick. Sidestick's
+ * *lead* pad was always (3,4), so nothing that already used it has moved.
  */
 export const DEFAULT_PAD_LAYOUT: PadLayout = [
   ['tomLow', 'tomMid', 'tomHigh', 'cymbalA'],
   ['hihat', 'openhat', 'hihat', 'ride'],
-  ['sidestick', 'snare', 'snare', 'sidestick'],
+  ['shaker', 'snare', 'snare', 'sidestick'],
   ['cymbalB', 'kick', 'kick', 'cymbalC'],
 ]
 

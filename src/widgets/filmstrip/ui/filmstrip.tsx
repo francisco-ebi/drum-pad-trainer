@@ -9,6 +9,8 @@ export interface FilmstripProps {
   index: PatternIndex
   /** Step currently sounding; -1 for a static render. */
   activeStep: number
+  /** Count row override; defaults to the pattern's own labels (§5). */
+  labels?: readonly string[]
   range?: [number, number]
   layout?: PadLayout
   leftHanded?: boolean
@@ -42,6 +44,7 @@ function buildFrames(index: PatternIndex, layout: PadLayout, leftHanded: boolean
 export function Filmstrip({
   index,
   activeStep,
+  labels,
   range,
   layout = DEFAULT_PAD_LAYOUT,
   leftHanded = false,
@@ -51,6 +54,7 @@ export function Filmstrip({
   const frames = useMemo(() => buildFrames(index, layout, leftHanded), [index, layout, leftHanded])
   const [rangeStart, rangeEnd] = range ?? [0, index.totalSteps]
   const nextStep = activeStep >= 0 ? (activeStep + 1) % index.totalSteps : -1
+  const counts = labels ?? index.labels
 
   return (
     <section className={`strip${compact ? ' strip--compact' : ''}`} aria-label="Pad filmstrip">
@@ -70,8 +74,8 @@ export function Filmstrip({
               .join(' ')}
             aria-label={
               frame.voices.length > 0
-                ? `Step ${step + 1} (${index.labels[step] ?? ''}): ${frame.voices.join(', ')}`
-                : `Step ${step + 1} (${index.labels[step] ?? ''}): rest`
+                ? `Step ${step + 1} (${counts[step] ?? ''}): ${frame.voices.join(', ')}`
+                : `Step ${step + 1} (${counts[step] ?? ''}): rest`
             }
             aria-current={step === activeStep ? 'step' : undefined}
             onClick={() => onStepClick?.(step)}
@@ -86,7 +90,7 @@ export function Filmstrip({
                 )
               })}
             </div>
-            <span className="strip__caption">{spokenCount(index.labels[step] ?? '')}</span>
+            <span className="strip__caption">{spokenCount(counts[step] ?? '')}</span>
           </button>
         ))}
       </div>

@@ -92,6 +92,7 @@ export const useAssessDrill = create<AssessState>()((set, get) => ({
       subdivision: pattern.subdivision,
       timeSig: pattern.timeSig,
       bars: pattern.bars,
+      swing: pattern.swing ?? 0,
     })
     transport.setLoop(true)
     transport.setCountInBars(1)

@@ -78,6 +78,14 @@ export const DEFAULT_SYNTH_BANK: SynthBank = {
     layers: [{ kind: 'metal', freq: 320, ratios: METAL_RATIOS, highpass: 6800, decay: 0.42 }],
     gain: 1.0,
   },
+  shaker: {
+    // Dry granular hiss: band-passed noise, brief hold then a fast decay. Less
+    // metallic than a hi-hat and higher than a snare's rattle.
+    layers: [{ kind: 'noise', filter: 'bandpass', freq: 6200, q: 1.1, decay: 0.05, hold: 0.004 }],
+    // Trimmed well down: a shaker runs six-plus notes a bar and is a texture
+    // under the kit, not a voice on top of it.
+    gain: 0.3,
+  },
   ride: {
     layers: [
       { kind: 'metal', freq: 480, ratios: METAL_RATIOS, highpass: 5200, decay: 1.1, gain: 0.5 },

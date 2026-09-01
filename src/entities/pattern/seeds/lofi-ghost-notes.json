@@ -1,0 +1,131 @@
+{
+  "id": "lofi-ghost-notes",
+  "title": "Ghost note groove",
+  "level": 4,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 1,
+  "bpmDefault": 75,
+  "bpmRange": [
+    55,
+    100
+  ],
+  "swing": 0.55,
+  "countLabels": [
+    "1",
+    "e",
+    "&",
+    "a",
+    "2",
+    "e",
+    "&",
+    "a",
+    "3",
+    "e",
+    "&",
+    "a",
+    "4",
+    "e",
+    "&",
+    "a"
+  ],
+  "lanes": [
+    "hihat",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "snare",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "snare",
+      "accent": true
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "snare",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 11,
+      "voice": "snare",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "snare",
+      "accent": true
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "hihat"
+    }
+  ],
+  "drill": {
+    "targetBpm": 80,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "The ghosts are almost silent — let the stick drop. Only 2 and 4 are struck."
+  }
+}

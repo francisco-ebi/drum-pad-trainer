@@ -65,11 +65,30 @@ describe('track gating (§11.1)', () => {
 })
 
 describe('seed curriculum (§16 M3)', () => {
-  it('ships at least twelve drills across tracks 1–3', () => {
+  it('ships at least twelve drills covering tracks 1–3', () => {
     expect(DRILLS.length).toBeGreaterThanOrEqual(12)
-    expect(new Set(DRILLS.map((d) => d.trackId))).toEqual(
-      new Set(['foundations', 'sixteenths', 'colors']),
-    )
+    for (const trackId of ['foundations', 'sixteenths', 'colors'] as const) {
+      expect({ trackId, has: drillsInTrack(trackId).length > 0 }).toEqual({ trackId, has: true })
+    }
+  })
+
+  it('has drills for every track it declares', () => {
+    for (const track of TRACKS) {
+      expect({ track: track.id, count: drillsInTrack(track.id).length }).not.toEqual({
+        track: track.id,
+        count: 0,
+      })
+    }
+  })
+
+  it('points every drill at a track that exists', () => {
+    const known = new Set(TRACKS.map((track) => track.id))
+    for (const drill of DRILLS) {
+      expect({ drill: drill.id, known: known.has(drill.trackId) }).toEqual({
+        drill: drill.id,
+        known: true,
+      })
+    }
   })
 
   it('gives every track at least three drills', () => {

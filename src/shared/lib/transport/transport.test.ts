@@ -259,3 +259,118 @@ describe('performance-to-audio anchor (§8.2)', () => {
     transport.dispose()
   })
 })
+
+describe('swing (§7.3 with a shuffled feel)', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  function swung(amount: number) {
+    const clock = new TestClock()
+    const transport = new Transport({
+      clock,
+      tickSource: intervalTickSource(),
+      bpm: 120,
+      subdivision: 8,
+      timeSig: [4, 4],
+      bars: 1,
+      startLeadSec: 0,
+      swing: amount,
+    })
+    return { clock, transport }
+  }
+
+  it('pushes the off-beats late while keeping the beats in place', () => {
+    const { clock, transport } = swung(1)
+    const events = collect(transport)
+    transport.play()
+    runFor(clock, 2.2)
+
+    const stepSec = 0.25
+    // On-beats land exactly where they would straight...
+    expect(events[0]?.time).toBeCloseTo(0, 9)
+    expect(events[2]?.time).toBeCloseTo(2 * stepSec, 9)
+    expect(events[4]?.time).toBeCloseTo(4 * stepSec, 9)
+    // ...and the off-beats sit a third of a step later.
+    expect(events[1]?.time).toBeCloseTo((1 + 1 / 3) * stepSec, 9)
+    expect(events[3]?.time).toBeCloseTo((3 + 1 / 3) * stepSec, 9)
+    transport.dispose()
+  })
+
+  it('keeps the bar the same length, so a loop cannot drift', () => {
+    const straight = swung(0)
+    const shuffled = swung(1)
+    const a = collect(straight.transport)
+    const b = collect(shuffled.transport)
+    straight.transport.play()
+    shuffled.transport.play()
+    runFor(straight.clock, 4.2)
+    runFor(shuffled.clock, 4.2)
+
+    // Every downbeat of every loop lines up between the two feels.
+    for (const step of [0, 8, 16]) {
+      const one = a.find((event) => event.rawStep === step)?.time
+      const other = b.find((event) => event.rawStep === step)?.time
+      expect(other).toBeCloseTo(one ?? -1, 9)
+    }
+    straight.transport.dispose()
+    shuffled.transport.dispose()
+  })
+
+  it('reads a swung position back from the clock', () => {
+    const { clock, transport } = swung(1)
+    transport.play()
+    const stepSec = 0.25
+
+    // Position comes straight off the clock, so advance it exactly rather than
+    // in scheduler-sized slices — the point is where the playhead *is* at an
+    // off-beat's own moment.
+    clock.advance((1 + 1 / 3) * stepSec)
+    expect(transport.position).toBeCloseTo(1, 9)
+
+    clock.advance((2 / 3) * stepSec)
+    expect(transport.position).toBeCloseTo(2, 9)
+
+    // Half way through the long half of the pair, not half way through a step.
+    clock.advance((1 + 1 / 3) * stepSec)
+    expect(transport.position).toBeCloseTo(3, 9)
+    transport.dispose()
+  })
+
+  it('scales the feel with the amount', () => {
+    const { clock, transport } = swung(0.5)
+    const events = collect(transport)
+    transport.play()
+    runFor(clock, 0.6)
+    expect(events[1]?.time).toBeCloseTo((1 + 1 / 6) * 0.25, 9)
+    transport.dispose()
+  })
+
+  it('can be turned off and on mid-session', () => {
+    const { transport } = swung(0.6)
+    expect(transport.swing).toBeCloseTo(0.6, 9)
+    transport.setSwing(0)
+    expect(transport.swing).toBe(0)
+    transport.setSwing(5) // clamped, not distorted
+    expect(transport.swing).toBe(1)
+    transport.dispose()
+  })
+
+  it('leaves the count-in click straight', () => {
+    const { clock, transport } = swung(1)
+    transport.setCountInBars(1)
+    const events = collect(transport)
+    transport.play()
+    runFor(clock, 2.1)
+
+    const countIn = events.filter((event) => event.isCountIn)
+    // Eight even eighths before the pattern starts, whatever the feel.
+    for (const [i, event] of countIn.entries()) {
+      expect(event.time).toBeCloseTo(i * 0.25, 9)
+    }
+    transport.dispose()
+  })
+})

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useDeviceStore } from '@/entities/device'
+import { COUNTING_STYLES, usePatternDisplay } from '@/entities/pattern'
 import { DEFAULT_WEEKLY_GOAL, useProgress } from '@/entities/progress'
 import { CalibrationPanel } from '@/features/calibrate-latency'
 import { MappingPanel } from '@/features/map-controller'
@@ -14,6 +15,9 @@ export function SettingsPage() {
   const weeklyGoal = useProgress((s) => s.progress.weeklyGoal)
   const setWeeklyGoal = useProgress((s) => s.setWeeklyGoal)
   const restartOnboarding = useDeviceStore((s) => s.restartOnboarding)
+  const counting = usePatternDisplay((s) => s.counting)
+  const setCounting = usePatternDisplay((s) => s.setCounting)
+  const countingStyle = COUNTING_STYLES.find((style) => style.id === counting)
 
   return (
     <div className="session">
@@ -36,6 +40,23 @@ export function SettingsPage() {
           <span className="session__hint">
             Swaps which pad of a mirrored voice counts as the lead hand (§4.2).
           </span>
+        </div>
+
+        <div className="session__panel">
+          <span className="session__panel-label">Counting</span>
+          <select
+            className="tbar__select"
+            aria-label="Counting style"
+            value={counting}
+            onChange={(event) => setCounting(event.target.value)}
+          >
+            {COUNTING_STYLES.map((style) => (
+              <option key={style.id} value={style.id}>
+                {style.label} — {style.example}
+              </option>
+            ))}
+          </select>
+          {countingStyle && <span className="session__hint">{countingStyle.description}</span>}
         </div>
 
         <div className="session__panel">

@@ -1,0 +1,139 @@
+{
+  "id": "fill-1-snare-run",
+  "title": "Fill #1 — snare run",
+  "level": 4,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 1,
+  "bpmDefault": 70,
+  "bpmRange": [
+    40,
+    130
+  ],
+  "countLabels": [
+    "1",
+    "e",
+    "&",
+    "a",
+    "2",
+    "e",
+    "&",
+    "a",
+    "3",
+    "e",
+    "&",
+    "a",
+    "4",
+    "e",
+    "&",
+    "a"
+  ],
+  "lanes": [
+    "cymbalA",
+    "openhat",
+    "hihat",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "cymbalA"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "openhat"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 9,
+      "voice": "snare",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "snare",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 11,
+      "voice": "snare",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "snare",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 13,
+      "voice": "snare",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "snare",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 15,
+      "voice": "snare",
+      "hand": "L"
+    }
+  ],
+  "drill": {
+    "targetBpm": 80,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "Seven strokes on the snare from the e of 3, alternating L R L R L R L — the lead hand lands free for the crash."
+  }
+}

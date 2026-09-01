@@ -14,6 +14,8 @@ export interface SequencerProps {
   index: PatternIndex
   /** Step currently sounding; -1 for a static render. */
   activeStep: number
+  /** Count row override; defaults to the pattern's own labels (§5). */
+  labels?: readonly string[]
   /** A/B loop range in pattern steps; steps outside it are dimmed. */
   range?: [number, number]
   isAudible?: (voice: Voice) => boolean
@@ -68,6 +70,7 @@ function Playhead({ index, getPosition }: { index: PatternIndex; getPosition: ()
 export function Sequencer({
   index,
   activeStep,
+  labels,
   range,
   isAudible,
   soloed = [],
@@ -79,12 +82,13 @@ export function Sequencer({
 }: SequencerProps) {
   const [rangeStart, rangeEnd] = range ?? [0, index.totalSteps]
   const showLaneControls = Boolean(onToggleMute ?? onToggleSolo)
+  const counts = labels ?? index.labels
 
   return (
     <section className="seq" aria-label={`Sequencer: ${index.pattern.title}`}>
       <div className="seq__grid" style={{ '--steps': index.totalSteps } as CSSProperties}>
         <div className="seq__corner" />
-        {index.labels.map((label, step) => (
+        {counts.map((label, step) => (
           <div
             key={`count-${step}`}
             className={[
@@ -149,8 +153,8 @@ export function Sequencer({
                     .join(' ')}
                   aria-label={
                     hit
-                      ? `${meta.label} on ${index.labels[step] ?? step + 1}, ${hitHand(hit) === 'L' ? 'alternate' : 'lead'} hand`
-                      : `${meta.label}, rest on ${index.labels[step] ?? step + 1}`
+                      ? `${meta.label} on ${counts[step] ?? step + 1}, ${hitHand(hit) === 'L' ? 'alternate' : 'lead'} hand`
+                      : `${meta.label}, rest on ${counts[step] ?? step + 1}`
                   }
                   onClick={() => onStepClick?.(step)}
                 >

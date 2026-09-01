@@ -6,7 +6,7 @@ const hasWebAudio = typeof OfflineAudioContext !== 'undefined'
 describe('synth kit', () => {
   it('covers every sound the voice map and metronome ask for', () => {
     const required = [
-      'kick', 'snare', 'sidestick', 'hihat', 'openhat', 'ride',
+      'kick', 'snare', 'sidestick', 'hihat', 'openhat', 'ride', 'shaker',
       'crash', 'crashDark', 'splash', 'tomLow', 'tomMid', 'tomHigh',
       'click', 'clickAccent',
     ]
@@ -42,7 +42,7 @@ describe('synth kit', () => {
       }
     })
 
-    it('sits the hats and cymbals under the kick and snare', async () => {
+    it('sits the hats, shaker and cymbals under the kick and snare', async () => {
       const rms = async (id: string) => {
         const sound = DEFAULT_SYNTH_BANK[id]
         if (!sound) throw new Error(`Unknown sound ${id}`)
@@ -52,7 +52,7 @@ describe('synth kit', () => {
         return Math.sqrt(sum / samples.length)
       }
       const kick = await rms('kick')
-      for (const id of ['hihat', 'openhat', 'ride']) {
+      for (const id of ['hihat', 'openhat', 'ride', 'shaker']) {
         expect(await rms(id)).toBeLessThan(kick)
       }
     })

@@ -8,6 +8,8 @@ export interface ResultsPanelProps {
   result: TakeResult
   /** Used to name the weak spot's step by its count label (§10.4). */
   index?: PatternIndex
+  /** Count row override, so the callout counts the way the player does. */
+  labels?: readonly string[]
   /** Best tempo held during a tempo-ladder run (§9.2). */
   bestBpm?: number
   onRetry?: () => void
@@ -19,6 +21,7 @@ export interface ResultsPanelProps {
 export function ResultsPanel({
   result,
   index,
+  labels,
   bestBpm,
   onRetry,
   onDrillWeakSpot,
@@ -26,7 +29,8 @@ export function ResultsPanel({
 }: ResultsPanelProps) {
   const { stats, timing, weakSpot } = result
   const peak = Math.max(1, ...timing.histogram.map((bucket) => bucket.count))
-  const weakLabel = weakSpot && index ? (index.labels[weakSpot.patternStep] ?? '') : ''
+  const counts = labels ?? index?.labels
+  const weakLabel = weakSpot && counts ? (counts[weakSpot.patternStep] ?? '') : ''
 
   return (
     <section className="results" aria-label="Take results">

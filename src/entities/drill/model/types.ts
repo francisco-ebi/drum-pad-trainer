@@ -1,6 +1,6 @@
 import type { Voice } from '@/entities/pattern/@x/drill'
 
-export type TrackId = 'foundations' | 'sixteenths' | 'colors' | 'fills' | 'tempo'
+export type TrackId = 'foundations' | 'sixteenths' | 'colors' | 'fills' | 'lofi' | 'tempo'
 
 export interface Track {
   id: TrackId

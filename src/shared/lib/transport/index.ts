@@ -16,3 +16,4 @@ export {
   toBarStep,
 } from './time'
 export type { TimeSig } from './time'
+export { clampSwing, swingShift, swingUnwarp, swingWarp, MAX_SWING } from './swing'

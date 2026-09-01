@@ -29,6 +29,7 @@ import {
   useWatchHotkeys,
   useWatchPlayback,
 } from '@/features/watch-playback'
+import { displayLabels, usePatternDisplay } from '@/entities/pattern'
 import type { Judgment } from '@/entities/take'
 import { Filmstrip } from '@/widgets/filmstrip'
 import { LivePad, type PadCue, type PadFeedback } from '@/widgets/live-pad'
@@ -117,6 +118,9 @@ export function SessionPage() {
     loadPattern(drill.patternId)
     loadDrill(drill.id)
   }, [drill, loadDrill, loadPattern])
+
+  const counting = usePatternDisplay((s) => s.counting)
+  const labels = useMemo(() => displayLabels(index, counting), [index, counting])
 
   const activeStep = usePlayheadStep()
   const getPosition = usePlayheadPosition()
@@ -224,6 +228,7 @@ export function SessionPage() {
         <Sequencer
           index={index}
           activeStep={activeStep}
+          labels={labels}
           range={range}
           isAudible={isAudible}
           soloed={soloed}
@@ -318,6 +323,7 @@ export function SessionPage() {
             <Filmstrip
               index={index}
               activeStep={activeStep}
+              labels={labels}
               range={range}
               compact={compact}
               onStepClick={seekToStep}

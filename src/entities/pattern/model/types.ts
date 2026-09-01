@@ -7,6 +7,7 @@ export type Voice =
   | 'hihat'
   | 'openhat'
   | 'ride'
+  | 'shaker'
   | 'cymbalA'
   | 'cymbalB'
   | 'cymbalC'
@@ -53,6 +54,11 @@ export interface Pattern {
   bars: number
   bpmDefault: number
   bpmRange: [number, number]
+  /**
+   * Off-beat delay, 0 straight to 1 full triplet feel (§7.3). Omitted means
+   * straight — the feel is part of the groove, so it travels with it.
+   */
+  swing?: number
   /** One label per step of a bar, e.g. ["1","e","&","a", …]. */
   countLabels: string[]
   /** Score-view row order, top → bottom. */
@@ -68,6 +74,7 @@ export const VOICES: readonly Voice[] = [
   'hihat',
   'openhat',
   'ride',
+  'shaker',
   'cymbalA',
   'cymbalB',
   'cymbalC',

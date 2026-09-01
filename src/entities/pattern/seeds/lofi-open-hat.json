@@ -1,0 +1,125 @@
+{
+  "id": "lofi-open-hat",
+  "title": "Open hat lo-fi",
+  "level": 5,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 1,
+  "bpmDefault": 76,
+  "bpmRange": [
+    55,
+    100
+  ],
+  "swing": 0.55,
+  "countLabels": [
+    "1",
+    "e",
+    "&",
+    "a",
+    "2",
+    "e",
+    "&",
+    "a",
+    "3",
+    "e",
+    "&",
+    "a",
+    "4",
+    "e",
+    "&",
+    "a"
+  ],
+  "lanes": [
+    "openhat",
+    "hihat",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 3,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "snare",
+      "accent": true
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "snare",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "snare",
+      "accent": true
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "openhat"
+    }
+  ],
+  "drill": {
+    "targetBpm": 82,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "The open hat on the last & lifts the bar into the next one. Close it on beat 1."
+  }
+}

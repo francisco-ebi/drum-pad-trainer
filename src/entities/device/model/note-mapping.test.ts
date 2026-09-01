@@ -33,6 +33,7 @@ describe('mapping presets', () => {
     expect(voiceOf(45)).toBe('tomLow')
     expect(voiceOf(47)).toBe('tomMid')
     expect(voiceOf(50)).toBe('tomHigh')
+    expect(voiceOf(82)).toBe('shaker')
   })
 
   it('sends GM notes to the lead pad of each mirrored voice', () => {

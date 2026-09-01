@@ -22,6 +22,8 @@ export interface WatchPlaybackState {
   metronome: boolean
   /** Continuous playhead bar instead of the discrete column (§6.1). */
   smoothPlayhead: boolean
+  /** Off-beat delay, 0 straight to 1 triplet. Seeded from the pattern (§7.3). */
+  swing: number
   muted: Voice[]
   soloed: Voice[]
   /** A/B loop range in pattern steps, `[start, end)`. */
@@ -38,6 +40,7 @@ export interface WatchPlaybackState {
   setLoop: (loop: boolean) => void
   setMetronome: (on: boolean) => void
   setSmoothPlayhead: (on: boolean) => void
+  setSwing: (amount: number) => void
   toggleMute: (voice: Voice) => void
   toggleSolo: (voice: Voice) => void
   clearMuteSolo: () => void
@@ -76,6 +79,7 @@ export const useWatchPlayback = create<WatchPlaybackState>()((set, get) => {
     countInBars: 0,
     metronome: false,
     smoothPlayhead: false,
+    swing: initialPattern.swing ?? 0,
     muted: [],
     soloed: [],
     range: [0, stepCount(initialPattern)],
@@ -89,6 +93,7 @@ export const useWatchPlayback = create<WatchPlaybackState>()((set, get) => {
         pattern,
         index,
         bpm: pattern.bpmDefault,
+        swing: pattern.swing ?? 0,
         range: [0, total],
         muted: [],
         soloed: [],
@@ -101,6 +106,7 @@ export const useWatchPlayback = create<WatchPlaybackState>()((set, get) => {
         subdivision: pattern.subdivision,
         timeSig: pattern.timeSig,
         bars: pattern.bars,
+        swing: pattern.swing ?? 0,
       })
       transport.setLoop(get().loop)
       transport.setCountInBars(get().countInBars)
@@ -151,6 +157,12 @@ export const useWatchPlayback = create<WatchPlaybackState>()((set, get) => {
 
     setSmoothPlayhead(smoothPlayhead) {
       set({ smoothPlayhead })
+    },
+
+    setSwing(amount) {
+      const swing = Math.min(1, Math.max(0, amount))
+      set({ swing })
+      if (audioAvailable()) getTransport().setSwing(swing)
     },
 
     toggleMute(voice) {

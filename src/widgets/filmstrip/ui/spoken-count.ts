@@ -8,6 +8,7 @@ const SPOKEN: Record<string, string> = {
   '5': 'Five',
   '6': 'Six',
   '7': 'Seven',
+  '8': 'Eight',
 }
 
 export function spokenCount(label: string): string {

@@ -1,0 +1,145 @@
+{
+  "id": "lofi-sidestick",
+  "title": "Sidestick lo-fi",
+  "level": 4,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 1,
+  "bpmDefault": 72,
+  "bpmRange": [
+    55,
+    95
+  ],
+  "swing": 0.55,
+  "countLabels": [
+    "1",
+    "e",
+    "&",
+    "a",
+    "2",
+    "e",
+    "&",
+    "a",
+    "3",
+    "e",
+    "&",
+    "a",
+    "4",
+    "e",
+    "&",
+    "a"
+  ],
+  "lanes": [
+    "shaker",
+    "hihat",
+    "sidestick",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "sidestick"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 7,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "hihat",
+      "ghost": true
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "sidestick"
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "shaker"
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "hihat",
+      "ghost": true
+    }
+  ],
+  "drill": {
+    "targetBpm": 78,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "Everything soft: rim instead of snare, hats barely there, shaker filling the gaps."
+  }
+}

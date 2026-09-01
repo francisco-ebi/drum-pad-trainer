@@ -1,0 +1,142 @@
+{
+  "id": "fill-2-descending-toms",
+  "title": "Fill #2 — descending toms",
+  "level": 5,
+  "timeSig": [
+    4,
+    4
+  ],
+  "subdivision": 16,
+  "bars": 1,
+  "bpmDefault": 65,
+  "bpmRange": [
+    40,
+    120
+  ],
+  "countLabels": [
+    "1",
+    "e",
+    "&",
+    "a",
+    "2",
+    "e",
+    "&",
+    "a",
+    "3",
+    "e",
+    "&",
+    "a",
+    "4",
+    "e",
+    "&",
+    "a"
+  ],
+  "lanes": [
+    "cymbalA",
+    "tomHigh",
+    "tomMid",
+    "tomLow",
+    "openhat",
+    "hihat",
+    "snare",
+    "kick"
+  ],
+  "hits": [
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "cymbalA"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 0,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 2,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 4,
+      "voice": "snare"
+    },
+    {
+      "bar": 0,
+      "step": 6,
+      "voice": "hihat"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "openhat"
+    },
+    {
+      "bar": 0,
+      "step": 8,
+      "voice": "kick"
+    },
+    {
+      "bar": 0,
+      "step": 9,
+      "voice": "tomHigh",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 10,
+      "voice": "tomHigh",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 11,
+      "voice": "tomMid",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 12,
+      "voice": "tomMid",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 13,
+      "voice": "tomLow",
+      "hand": "L"
+    },
+    {
+      "bar": 0,
+      "step": 14,
+      "voice": "tomLow",
+      "hand": "R"
+    },
+    {
+      "bar": 0,
+      "step": 15,
+      "voice": "tomLow",
+      "hand": "L"
+    }
+  ],
+  "drill": {
+    "targetBpm": 75,
+    "starAccuracy": [
+      70,
+      85,
+      95
+    ],
+    "notes": "The same seven strokes, walked down the toms two at a time. Keep the sticking even as the hands travel."
+  }
+}

@@ -110,6 +110,7 @@ export const usePracticeTake = create<PracticeState>()((set, get) => ({
       subdivision: pattern.subdivision,
       timeSig: pattern.timeSig,
       bars: pattern.bars,
+      swing: pattern.swing ?? 0,
     })
     transport.setLoop(true)
     transport.setCountInBars(get().countInBars)

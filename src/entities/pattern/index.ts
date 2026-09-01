@@ -21,6 +21,18 @@ export {
 } from './lib/query'
 export type { PatternIndex } from './lib/query'
 
+export {
+  countLabelsFor,
+  displayLabels,
+  isCountingStyle,
+  COUNTING_STYLES,
+  DEFAULT_COUNTING_STYLE,
+} from './lib/counting'
+export type { CountingStyle, CountingStyleId } from './lib/counting'
+
+export { usePatternDisplay, DISPLAY_SLICE } from './model/display'
+export type { PatternDisplayStore } from './model/display'
+
 export { VOICE_META, voiceColor, DYNAMICS } from './config/voices'
 export type { VoiceMeta } from './config/voices'
 

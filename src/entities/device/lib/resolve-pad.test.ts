@@ -7,10 +7,11 @@ describe('pad layout', () => {
     expect(DEFAULT_PAD_LAYOUT).toEqual([
       ['tomLow', 'tomMid', 'tomHigh', 'cymbalA'],
       ['hihat', 'openhat', 'hihat', 'ride'],
-      ['sidestick', 'snare', 'snare', 'sidestick'],
+      ['shaker', 'snare', 'snare', 'sidestick'],
       ['cymbalB', 'kick', 'kick', 'cymbalC'],
     ])
     expect(voiceAtPad({ row: 4, col: 2 })).toBe('kick')
+    expect(voiceAtPad({ row: 3, col: 1 })).toBe('shaker')
     expect(voiceAtPad({ row: 9, col: 9 })).toBeUndefined()
   })
 
@@ -43,6 +44,14 @@ describe('voice + hand -> pad', () => {
   it('ignores the hand for single-pad voices', () => {
     expect(resolvePad('ride', 'L')).toEqual({ row: 2, col: 4 })
     expect(resolvePad('openhat', 'L')).toEqual({ row: 2, col: 2 })
+    expect(resolvePad('shaker', 'L')).toEqual({ row: 3, col: 1 })
+  })
+
+  it('leaves sidestick on the pad it always led with', () => {
+    // The shaker took (3,1), which was sidestick's *alternate* pad, so every
+    // pattern that already used a sidestick plays exactly where it did.
+    expect(resolvePad('sidestick', 'R')).toEqual({ row: 3, col: 4 })
+    expect(resolvePad('sidestick', 'L')).toEqual({ row: 3, col: 4 })
   })
 
   it('swaps the convention for left-handed players', () => {

@@ -109,6 +109,70 @@ const SEEDS: DrillSeed[] = [
     patternId: 'open-hat-accents',
     focus: ['openhat'],
   },
+
+  // ---- Track 4 · Fills & toms ----------------------------------------------
+  {
+    id: 'fills-snare-run',
+    trackId: 'fills',
+    patternId: 'fill-1-snare-run',
+    focus: ['snare'],
+  },
+  {
+    // The sticking is the lesson in a fill, so the run is re-run strictly once
+    // the notes are under the hands (§4.2).
+    id: 'fills-snare-run-strict',
+    trackId: 'fills',
+    patternId: 'fill-1-snare-run',
+    title: 'Fill #1 — snare run, strict hands',
+    strictHands: true,
+    starAccuracy: [65, 80, 92],
+    focus: ['snare'],
+    notes: 'Same seven strokes, now judged on which snare pad each one lands on. Lead, alternate, lead…',
+  },
+  {
+    id: 'fills-descending-toms',
+    trackId: 'fills',
+    patternId: 'fill-2-descending-toms',
+    focus: ['tomHigh', 'tomMid', 'tomLow'],
+  },
+  {
+    id: 'fills-snare-into-toms',
+    trackId: 'fills',
+    patternId: 'fill-3-snare-into-toms',
+    focus: ['snare', 'tomMid', 'tomLow'],
+  },
+
+  // ---- Track 5 · Lo-fi & feel ----------------------------------------------
+  {
+    id: 'lofi-boom-bap',
+    trackId: 'lofi',
+    patternId: 'lofi-boom-bap',
+    focus: ['kick', 'snare'],
+  },
+  {
+    id: 'lofi-half-time',
+    trackId: 'lofi',
+    patternId: 'lofi-half-time',
+    focus: ['snare'],
+  },
+  {
+    id: 'lofi-ghost-notes',
+    trackId: 'lofi',
+    patternId: 'lofi-ghost-notes',
+    focus: ['snare'],
+  },
+  {
+    id: 'lofi-sidestick',
+    trackId: 'lofi',
+    patternId: 'lofi-sidestick',
+    focus: ['sidestick', 'shaker'],
+  },
+  {
+    id: 'lofi-open-hat',
+    trackId: 'lofi',
+    patternId: 'lofi-open-hat',
+    focus: ['openhat'],
+  },
 ]
 
 function build(): Drill[] {

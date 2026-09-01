@@ -40,6 +40,7 @@ export function TransportBar({
   const metronome = useWatchPlayback((s) => s.metronome)
   const countInBars = useWatchPlayback((s) => s.countInBars)
   const smoothPlayhead = useWatchPlayback((s) => s.smoothPlayhead)
+  const swing = useWatchPlayback((s) => s.swing)
 
   const toggle = useWatchPlayback((s) => s.toggle)
   const stop = useWatchPlayback((s) => s.stop)
@@ -48,6 +49,7 @@ export function TransportBar({
   const setMetronome = useWatchPlayback((s) => s.setMetronome)
   const setCountInBars = useWatchPlayback((s) => s.setCountInBars)
   const setSmoothPlayhead = useWatchPlayback((s) => s.setSmoothPlayhead)
+  const setSwing = useWatchPlayback((s) => s.setSwing)
   const stepBy = useWatchPlayback((s) => s.stepBy)
   const loadPattern = useWatchPlayback((s) => s.loadPattern)
 
@@ -128,6 +130,15 @@ export function TransportBar({
         <Button onClick={tap} aria-label="Tap tempo">
           Tap
         </Button>
+        <Slider
+          label="Swing"
+          value={Math.round(swing * 100)}
+          min={0}
+          max={100}
+          step={5}
+          display={swing === 0 ? 'straight' : `${Math.round(swing * 100)}%`}
+          onChange={(value) => setSwing(value / 100)}
+        />
       </div>
       )}
 

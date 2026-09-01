@@ -25,8 +25,9 @@ export interface MappingPreset {
  * are simply unreachable on it. Lenient judging (§4.2) means that costs
  * nothing outside `strictHands` drills.
  *
- * §4.3 lists cymbal C without a GM note; 55 (splash) is the natural fit and is
- * the one addition here beyond the spec's list.
+ * §4.3 lists cymbal C without a GM note; 55 (splash) is the natural fit. The
+ * shaker takes GM 82, its standard percussion note. Both are additions beyond
+ * the spec's list.
  */
 const GENERAL_MIDI_NOTES: Record<number, Voice> = {
   36: 'kick',
@@ -35,6 +36,7 @@ const GENERAL_MIDI_NOTES: Record<number, Voice> = {
   42: 'hihat',
   46: 'openhat',
   51: 'ride',
+  82: 'shaker',
   49: 'cymbalA',
   57: 'cymbalB',
   55: 'cymbalC',

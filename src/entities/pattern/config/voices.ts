@@ -32,6 +32,13 @@ export const VOICE_META: Record<Voice, VoiceMeta> = {
     soundId: 'openhat',
   },
   ride: { id: 'ride', label: 'Ride', short: 'R', colorVar: '--c-voice-ride', soundId: 'ride' },
+  shaker: {
+    id: 'shaker',
+    label: 'Shaker',
+    short: 'SH',
+    colorVar: '--c-voice-shaker',
+    soundId: 'shaker',
+  },
   cymbalA: {
     id: 'cymbalA',
     label: 'Cymbal A',

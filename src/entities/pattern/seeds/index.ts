@@ -1,11 +1,20 @@
 import { parsePattern } from '../lib/validate'
 import type { Pattern } from '../model/types'
+import afroFunk1 from './afro-funk-1.json'
 import alternatingHats16 from './alternating-hats-16.json'
 import backbeatSnare from './backbeat-snare.json'
 import basic16thBeat from './basic-16th-beat.json'
 import basic8thBeat from './basic-8th-beat.json'
 import eighthHats from './eighth-hats.json'
+import fill1SnareRun from './fill-1-snare-run.json'
+import fill2DescendingToms from './fill-2-descending-toms.json'
+import fill3SnareIntoToms from './fill-3-snare-into-toms.json'
 import kickSnareIndependence from './kick-snare-independence.json'
+import lofiBoomBap from './lofi-boom-bap.json'
+import lofiGhostNotes from './lofi-ghost-notes.json'
+import lofiHalfTime from './lofi-half-time.json'
+import lofiOpenHat from './lofi-open-hat.json'
+import lofiSidestick from './lofi-sidestick.json'
 import openHatAccents from './open-hat-accents.json'
 import quarterKick from './quarter-kick.json'
 import rideGroove from './ride-groove.json'
@@ -37,6 +46,18 @@ export const SEED_PATTERNS: readonly Pattern[] = [
   rideGroove,
   sidestickGroove,
   openHatAccents,
+  // Track 4 · Fills & toms
+  fill1SnareRun,
+  fill2DescendingToms,
+  fill3SnareIntoToms,
+  // Track 5 · Lo-fi & feel
+  lofiBoomBap,
+  lofiHalfTime,
+  lofiGhostNotes,
+  lofiSidestick,
+  lofiOpenHat,
+  // Free play — not yet placed in a track
+  afroFunk1,
 ].map((raw) => parsePattern(raw))
 
 export const SEED_PATTERNS_BY_ID: ReadonlyMap<string, Pattern> = new Map(

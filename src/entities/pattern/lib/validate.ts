@@ -96,6 +96,12 @@ export function validatePattern(raw: unknown): ValidationIssue[] {
     issues.push({ path: 'bpmDefault', message: 'must sit inside bpmRange' })
   }
 
+  if (raw.swing !== undefined) {
+    if (typeof raw.swing !== 'number' || !Number.isFinite(raw.swing) || raw.swing < 0 || raw.swing > 1) {
+      issues.push({ path: 'swing', message: 'must be a number from 0 (straight) to 1 (triplet)' })
+    }
+  }
+
   // Everything below needs a usable metre.
   if (issues.some((i) => i.path === 'timeSig' || i.path === 'subdivision' || i.path === 'bars')) {
     return issues
